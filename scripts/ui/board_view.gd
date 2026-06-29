@@ -7,7 +7,7 @@ var _cells: Array = []
 
 
 func _ready() -> void:
-    columns = GameState.BOARD_SIZE
+    columns = GameState.BOARD_COLUMNS
     add_theme_constant_override("h_separation", 0)
     add_theme_constant_override("v_separation", 0)
 
@@ -17,10 +17,10 @@ func build() -> void:
         remove_child(child)
         child.queue_free()
     _cells.clear()
-    columns = GameState.BOARD_SIZE
+    columns = GameState.BOARD_COLUMNS
 
-    for y in range(GameState.BOARD_SIZE):
-        for x in range(GameState.BOARD_SIZE):
+    for y in range(GameState.BOARD_ROWS):
+        for x in range(GameState.BOARD_COLUMNS):
             var board_cell := BoardCell.new()
             board_cell.setup(Vector2i(x, y))
             board_cell.card_dropped.connect(_on_cell_dropped)
@@ -36,9 +36,9 @@ func refresh(state: GameState) -> void:
 
 
 func refresh_board(board: Array, can_drop: bool) -> void:
-    for y in range(GameState.BOARD_SIZE):
-        for x in range(GameState.BOARD_SIZE):
-            var index := y * GameState.BOARD_SIZE + x
+    for y in range(GameState.BOARD_ROWS):
+        for x in range(GameState.BOARD_COLUMNS):
+            var index := y * GameState.BOARD_COLUMNS + x
             var board_cell: BoardCell = _cells[index]
             board_cell.set_card(board[y][x])
             board_cell.set_drop_enabled(can_drop)
@@ -55,9 +55,9 @@ func play_drop_events(events: Array) -> void:
 
 
 func get_board_cell(cell: Vector2i) -> BoardCell:
-    if cell.x < 0 or cell.x >= GameState.BOARD_SIZE or cell.y < 0 or cell.y >= GameState.BOARD_SIZE:
+    if cell.x < 0 or cell.x >= GameState.BOARD_COLUMNS or cell.y < 0 or cell.y >= GameState.BOARD_ROWS:
         return null
-    var index := cell.y * GameState.BOARD_SIZE + cell.x
+    var index := cell.y * GameState.BOARD_COLUMNS + cell.x
     if index < 0 or index >= _cells.size():
         return null
     return _cells[index] as BoardCell

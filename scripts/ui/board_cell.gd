@@ -13,7 +13,7 @@ var _empty_label: Label
 
 
 func _ready() -> void:
-    custom_minimum_size = Vector2(122, 122)
+    custom_minimum_size = Vector2(116, 174)
     _ensure_children()
     _refresh()
 

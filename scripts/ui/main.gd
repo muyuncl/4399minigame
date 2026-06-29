@@ -74,20 +74,20 @@ func _build_ui() -> void:
 
     var board_box := VBoxContainer.new()
     board_box.alignment = BoxContainer.ALIGNMENT_CENTER
-    board_box.add_theme_constant_override("separation", 8)
+    board_box.add_theme_constant_override("separation", 4)
     board_margin.add_child(board_box)
 
     var board_title := Label.new()
-    board_title.text = "才艺舞台"
+    board_title.text = "才艺舞台 6x5"
     board_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    board_title.add_theme_font_size_override("font_size", 22)
+    board_title.add_theme_font_size_override("font_size", 20)
     board_title.add_theme_color_override("font_color", Color(0.2, 0.11, 0.07))
     board_box.add_child(board_title)
 
     var bonus_label := Label.new()
     bonus_label.text = "最上排 / 最左列入场 +1"
     bonus_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    bonus_label.add_theme_font_size_override("font_size", 14)
+    bonus_label.add_theme_font_size_override("font_size", 13)
     bonus_label.add_theme_color_override("font_color", Color(0.38, 0.22, 0.09))
     board_box.add_child(bonus_label)
 
@@ -303,9 +303,9 @@ func _make_visual_board_before_drop(hand_index: int, cell: Vector2i) -> Array:
 
 func _clone_board(source_board: Array) -> Array:
     var cloned := []
-    for y in range(GameState.BOARD_SIZE):
+    for y in range(GameState.BOARD_ROWS):
         var row := []
-        for x in range(GameState.BOARD_SIZE):
+        for x in range(GameState.BOARD_COLUMNS):
             var card: CardData = source_board[y][x]
             row.append(null if card == null else card.clone())
         cloned.append(row)

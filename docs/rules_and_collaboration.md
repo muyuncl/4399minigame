@@ -2,7 +2,7 @@
 
 ## 当前玩法
 
-- 棋盘是 6x6。
+- 棋盘是 5 行、6 列。
 - 右侧是手牌区，开局 5 张；每次用到只剩 1 张时，补回 5 张。
 - 普通卡有三类：唱歌、跳舞、聊天；基础数字范围 1-5。
 - 普通卡拖到空格后会固定在该格，不会下落。
@@ -22,7 +22,7 @@
 - `scripts/puzzle/game_state.gd`：棋盘、抽卡、放置、连锁、计分和结束判断。
 - `scripts/ui/card_view.gd`：单张卡牌的占位美术和拖拽源。
 - `scripts/ui/board_cell.gd`：棋盘格、拖放目标和格内显示。
-- `scripts/ui/board_view.gd`：6x6 棋盘容器。
+- `scripts/ui/board_view.gd`：5 行 6 列棋盘容器。
 - `scripts/ui/hand_view.gd`：右侧手牌区。
 - `scripts/ui/main.gd`：主界面组装、按钮和状态刷新。
 - `scenes/main.tscn`：项目启动场景。

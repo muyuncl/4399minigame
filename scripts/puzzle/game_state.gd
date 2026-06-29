@@ -1,7 +1,8 @@
 class_name GameState
 extends RefCounted
 
-const BOARD_SIZE := 6
+const BOARD_COLUMNS := 6
+const BOARD_ROWS := 5
 const HAND_SIZE := 5
 
 var board: Array = []
@@ -40,7 +41,7 @@ func place_from_hand(hand_index: int, cell: Vector2i) -> Dictionary:
 	if hand_index < 0 or hand_index >= hand.size():
 		return {"ok": false, "message": "找不到这张手牌。"}
 	if not _is_inside(cell):
-		return {"ok": false, "message": "只能放在 6x6 棋盘内。"}
+		return {"ok": false, "message": "只能放在 6x5 棋盘内。"}
 	if board[cell.y][cell.x] != null:
 		return {"ok": false, "message": "这个格子已经有节目了。"}
 
@@ -88,8 +89,8 @@ func place_from_hand(hand_index: int, cell: Vector2i) -> Dictionary:
 
 
 func has_empty_cell() -> bool:
-	for y in range(BOARD_SIZE):
-		for x in range(BOARD_SIZE):
+	for y in range(BOARD_ROWS):
+		for x in range(BOARD_COLUMNS):
 			if board[y][x] == null:
 				return true
 	return false
@@ -142,9 +143,9 @@ func _use_default_config() -> void:
 
 func _clear_board() -> void:
 	board.clear()
-	for _y in range(BOARD_SIZE):
+	for _y in range(BOARD_ROWS):
 		var row := []
-		for _x in range(BOARD_SIZE):
+		for _x in range(BOARD_COLUMNS):
 			row.append(null)
 		board.append(row)
 
@@ -412,7 +413,7 @@ func _neighbors(cell: Vector2i) -> Array[Vector2i]:
 
 
 func _is_inside(cell: Vector2i) -> bool:
-	return cell.x >= 0 and cell.x < BOARD_SIZE and cell.y >= 0 and cell.y < BOARD_SIZE
+	return cell.x >= 0 and cell.x < BOARD_COLUMNS and cell.y >= 0 and cell.y < BOARD_ROWS
 
 
 func _build_result_message(card: CardData, gained: int, chain_steps: int) -> String:
