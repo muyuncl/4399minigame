@@ -1,0 +1,30 @@
+{
+  "normal_cards": [
+    {
+      "type": "sing",
+      "label": "唱歌",
+      "short": "唱",
+      "color": "#e65f73"
+    },
+    {
+      "type": "dance",
+      "label": "跳舞",
+      "short": "舞",
+      "color": "#42a5f5"
+    },
+    {
+      "type": "chat",
+      "label": "聊天",
+      "short": "聊",
+      "color": "#f4b84a"
+    }
+  ],
+  "value_min": 1,
+  "value_max": 5,
+  "warehouse_weight": 0.14,
+  "warehouse": {
+    "label": "收纳",
+    "short": "收",
+    "color": "#76c26a"
+  }
+}
