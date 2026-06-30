@@ -1,0 +1,1794 @@
+[gd_scene format=3 uid="uid://roqc5cqg27pa"]
+
+[ext_resource type="Script" uid="uid://cs6dsuqaohyys" path="res://scripts/ui/entry_flow.gd" id="1_entry"]
+
+[node name="EntryFlow" type="Control" unique_id=290501908]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_entry")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1889245182]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.95, 0.95, 0.95, 1)
+
+[node name="AccountPage" type="Control" parent="." unique_id=1346171346]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HeaderPanel" type="Panel" parent="AccountPage" unique_id=328662203 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 48.0
+offset_right = 1876.0
+offset_bottom = 134.0
+
+[node name="HeaderTitle" type="Label" parent="AccountPage/HeaderPanel" unique_id=1602278461]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 18.0
+offset_right = 360.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 30
+text = "● 主播身份确认"
+
+[node name="HeaderStep" type="Label" parent="AccountPage/HeaderPanel" unique_id=611963931]
+layout_mode = 0
+offset_left = 866.0
+offset_top = 24.0
+offset_right = 1020.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "准备上台"
+
+[node name="AccountCard" type="Panel" parent="AccountPage" unique_id=1545898430 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 650.0
+offset_top = 242.0
+offset_right = 1270.0
+offset_bottom = 840.0
+
+[node name="PreviewAvatar" type="Panel" parent="AccountPage/AccountCard" unique_id=1788208319]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 52.0
+offset_right = 370.0
+offset_bottom = 172.0
+
+[node name="RoleLabel" type="Label" parent="AccountPage/AccountCard" unique_id=216869281]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 208.0
+offset_right = 396.0
+offset_bottom = 254.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 32
+text = "新人主播"
+horizontal_alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="AccountPage/AccountCard" unique_id=837784702]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 292.0
+offset_right = 556.0
+offset_bottom = 364.0
+theme_override_font_sizes/font_size = 28
+placeholder_text = "输入主播昵称"
+
+[node name="AvatarChoices" type="Control" parent="AccountPage/AccountCard" unique_id=1896164464]
+anchors_preset = 0
+offset_left = 164.0
+offset_top = 422.0
+offset_right = 456.0
+offset_bottom = 522.0
+
+[node name="AvatarChoice1" type="Button" parent="AccountPage/AccountCard/AvatarChoices" unique_id=1911168742]
+layout_mode = 0
+offset_right = 86.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 24
+text = "A"
+
+[node name="AvatarChoice2" type="Button" parent="AccountPage/AccountCard/AvatarChoices" unique_id=2019670723]
+layout_mode = 0
+offset_left = 104.0
+offset_right = 190.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 24
+text = "B"
+
+[node name="AvatarChoice3" type="Button" parent="AccountPage/AccountCard/AvatarChoices" unique_id=786601015]
+layout_mode = 0
+offset_left = 208.0
+offset_right = 294.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 24
+text = "C"
+
+[node name="HintLabel" type="Label" parent="AccountPage/AccountCard" unique_id=1804391283]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 540.0
+offset_right = 560.0
+offset_bottom = 582.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "选择头像并输入昵称，确认后生成唯一六位数字 ID。"
+horizontal_alignment = 1
+
+[node name="CreateAccountButton" type="Button" parent="AccountPage" unique_id=357510157 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 724.0
+offset_top = 928.0
+offset_right = 1196.0
+offset_bottom = 998.0
+theme_override_font_sizes/font_size = 30
+text = "确认"
+
+[node name="LobbyPage" type="Control" parent="." unique_id=202934765]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HeaderPanel" type="Panel" parent="LobbyPage" unique_id=1016898890 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 36.0
+offset_right = 1876.0
+offset_bottom = 116.0
+
+[node name="PlatformTitle" type="Label" parent="LobbyPage/HeaderPanel" unique_id=315335278]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 16.0
+offset_right = 352.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 30
+text = "● XX直播平台"
+
+[node name="OnlineLabel" type="Label" parent="LobbyPage/HeaderPanel" unique_id=1978173626]
+layout_mode = 0
+offset_left = 780.0
+offset_top = 22.0
+offset_right = 1080.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "👁 在线 12,488"
+horizontal_alignment = 1
+
+[node name="SettingsButton" type="Button" parent="LobbyPage/HeaderPanel" unique_id=1625291463 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1604.0
+offset_top = 18.0
+offset_right = 1696.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 18
+text = "设置"
+
+[node name="ExitButton" type="Button" parent="LobbyPage/HeaderPanel" unique_id=1661146318 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1716.0
+offset_top = 18.0
+offset_right = 1810.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 18
+text = "退出"
+
+[node name="LivePanel" type="Panel" parent="LobbyPage" unique_id=2062940493 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 244.0
+offset_right = 1030.0
+offset_bottom = 930.0
+
+[node name="VideoPanel" type="Panel" parent="LobbyPage/LivePanel" unique_id=1273336405]
+layout_mode = 0
+offset_right = 910.0
+offset_bottom = 530.0
+
+[node name="VideoTitle" type="Label" parent="LobbyPage/LivePanel/VideoPanel" unique_id=82755026]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 212.0
+offset_right = 670.0
+offset_bottom = 270.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 36
+text = "直播间封面（画面）"
+horizontal_alignment = 1
+
+[node name="VideoSubtitle" type="Label" parent="LobbyPage/LivePanel/VideoPanel" unique_id=784937017]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 286.0
+offset_right = 670.0
+offset_bottom = 326.0
+theme_override_colors/font_color = Color(0.36, 0.36, 0.36, 1)
+theme_override_font_sizes/font_size = 22
+text = "随机频段 / 临时资源"
+horizontal_alignment = 1
+
+[node name="HeatLabel" type="Label" parent="LobbyPage/LivePanel" unique_id=359083771]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 486.0
+offset_right = 230.0
+offset_bottom = 526.0
+theme_override_colors/font_color = Color(0.35, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 28
+text = "👁 1.2w"
+
+[node name="StageLabel" type="Label" parent="LobbyPage/LivePanel" unique_id=73882764]
+layout_mode = 0
+offset_left = 742.0
+offset_top = 486.0
+offset_right = 884.0
+offset_bottom = 526.0
+theme_override_colors/font_color = Color(0.35, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 28
+text = "唱见舞台"
+
+[node name="AccountStrip" type="Panel" parent="LobbyPage/LivePanel" unique_id=1568126215 groups=["outlined_panels"]]
+layout_mode = 0
+offset_top = 530.0
+offset_right = 910.0
+offset_bottom = 686.0
+
+[node name="LobbyAvatar" type="Panel" parent="LobbyPage/LivePanel/AccountStrip" unique_id=1162325564]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 24.0
+offset_right = 168.0
+offset_bottom = 122.0
+
+[node name="LobbyName" type="Label" parent="LobbyPage/LivePanel/AccountStrip" unique_id=1252699830]
+layout_mode = 0
+offset_left = 218.0
+offset_top = 38.0
+offset_right = 650.0
+offset_bottom = 82.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 34
+text = "P1 主播"
+
+[node name="LobbyId" type="Label" parent="LobbyPage/LivePanel/AccountStrip" unique_id=1755358310]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 92.0
+offset_right = 420.0
+offset_bottom = 126.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 22
+text = "ID 000000"
+
+[node name="LobbyHeat" type="Label" parent="LobbyPage/LivePanel/AccountStrip" unique_id=1043034825]
+layout_mode = 0
+offset_left = 646.0
+offset_top = 92.0
+offset_right = 840.0
+offset_bottom = 126.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 22
+text = "热度 0"
+horizontal_alignment = 2
+
+[node name="StartGameButton" type="Button" parent="LobbyPage" unique_id=435764882 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1334.0
+offset_top = 450.0
+offset_right = 1586.0
+offset_bottom = 542.0
+theme_override_font_sizes/font_size = 34
+text = "开始游戏"
+
+[node name="RulesButton" type="Button" parent="LobbyPage" unique_id=1150959493 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1288.0
+offset_top = 664.0
+offset_right = 1630.0
+offset_bottom = 736.0
+theme_override_font_sizes/font_size = 30
+text = "规则说明"
+
+[node name="RankingButton" type="Button" parent="LobbyPage" unique_id=383182998 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1288.0
+offset_top = 796.0
+offset_right = 1630.0
+offset_bottom = 868.0
+theme_override_font_sizes/font_size = 30
+text = "当前人气榜"
+
+[node name="LobbyStatusLabel" type="Label" parent="LobbyPage" unique_id=2025983620]
+layout_mode = 0
+offset_left = 1160.0
+offset_top = 900.0
+offset_right = 1760.0
+offset_bottom = 948.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="SkillPage" type="Control" parent="." unique_id=1611855870]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HeaderPanel" type="Panel" parent="SkillPage" unique_id=531779279 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 48.0
+offset_right = 1876.0
+offset_bottom = 134.0
+
+[node name="HeaderTitle" type="Label" parent="SkillPage/HeaderPanel" unique_id=417193628]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 18.0
+offset_right = 360.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 30
+text = "● 主播身份确认"
+
+[node name="HeaderStep" type="Label" parent="SkillPage/HeaderPanel" unique_id=781785004]
+layout_mode = 0
+offset_left = 866.0
+offset_top = 24.0
+offset_right = 1020.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "准备上台"
+
+[node name="PlayerCard" type="Panel" parent="SkillPage" unique_id=2054283896 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 650.0
+offset_top = 242.0
+offset_right = 1270.0
+offset_bottom = 840.0
+
+[node name="PlayerAvatar" type="Panel" parent="SkillPage/PlayerCard" unique_id=732764712]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 52.0
+offset_right = 370.0
+offset_bottom = 172.0
+
+[node name="PlayerName" type="Label" parent="SkillPage/PlayerCard" unique_id=2014945560]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 208.0
+offset_right = 430.0
+offset_bottom = 254.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 32
+text = "P1 主播"
+horizontal_alignment = 1
+
+[node name="SkillChoices" type="Control" parent="SkillPage/PlayerCard" unique_id=1214912010]
+anchors_preset = 0
+offset_left = 92.0
+offset_top = 348.0
+offset_right = 528.0
+offset_bottom = 510.0
+
+[node name="SkillChoice1" type="Button" parent="SkillPage/PlayerCard/SkillChoices" unique_id=550956726]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 1
+
+[node name="IconCircle" type="Panel" parent="SkillPage/PlayerCard/SkillChoices/SkillChoice1" unique_id=762242846]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 107.0
+offset_bottom = 90.0
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="SkillPage/PlayerCard/SkillChoices/SkillChoice1" unique_id=449492068]
+layout_mode = 0
+offset_left = -14.0
+offset_top = 104.0
+offset_right = 142.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "十方寂灭"
+horizontal_alignment = 1
+
+[node name="SkillChoice2" type="Button" parent="SkillPage/PlayerCard/SkillChoices" unique_id=1103144352]
+layout_mode = 0
+offset_left = 154.0
+offset_right = 282.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 1
+
+[node name="IconCircle" type="Panel" parent="SkillPage/PlayerCard/SkillChoices/SkillChoice2" unique_id=607038765]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 107.0
+offset_bottom = 90.0
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="SkillPage/PlayerCard/SkillChoices/SkillChoice2" unique_id=349763444]
+layout_mode = 0
+offset_left = -14.0
+offset_top = 104.0
+offset_right = 142.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "蓄力一击"
+horizontal_alignment = 1
+
+[node name="SkillChoice3" type="Button" parent="SkillPage/PlayerCard/SkillChoices" unique_id=1457315609]
+layout_mode = 0
+offset_left = 308.0
+offset_right = 436.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 1
+
+[node name="IconCircle" type="Panel" parent="SkillPage/PlayerCard/SkillChoices/SkillChoice3" unique_id=1501401590]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 4.0
+offset_right = 107.0
+offset_bottom = 90.0
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="SkillPage/PlayerCard/SkillChoices/SkillChoice3" unique_id=986532484]
+layout_mode = 0
+offset_left = -14.0
+offset_top = 104.0
+offset_right = 142.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "观众共鸣"
+horizontal_alignment = 1
+
+[node name="SkillHint" type="Label" parent="SkillPage/PlayerCard" unique_id=1264118836]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 548.0
+offset_right = 550.0
+offset_bottom = 590.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 20
+text = "从三个技能中选择两个，悬停技能可查看说明。"
+horizontal_alignment = 1
+
+[node name="SkillTip" type="Panel" parent="SkillPage" unique_id=110625078 groups=["outlined_panels"]]
+visible = false
+layout_mode = 0
+offset_left = 1290.0
+offset_top = 354.0
+offset_right = 1724.0
+offset_bottom = 552.0
+
+[node name="TipTitle" type="Label" parent="SkillPage/SkillTip" unique_id=185105884]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 380.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "技能名称"
+
+[node name="TipEffect" type="Label" parent="SkillPage/SkillTip" unique_id=1791115426]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 78.0
+offset_right = 396.0
+offset_bottom = 168.0
+theme_override_colors/font_color = Color(0.12, 0.12, 0.12, 1)
+theme_override_font_sizes/font_size = 22
+text = "技能效果说明"
+autowrap_mode = 3
+
+[node name="StartPkButton" type="Button" parent="SkillPage" unique_id=218532261 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 724.0
+offset_top = 928.0
+offset_right = 1196.0
+offset_bottom = 998.0
+theme_override_font_sizes/font_size = 30
+text = "开始PK"
+
+[node name="VsPage" type="Control" parent="." unique_id=52255186]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HeaderPanel" type="Panel" parent="VsPage" unique_id=402295249 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 48.0
+offset_right = 1876.0
+offset_bottom = 134.0
+
+[node name="HeaderTitle" type="Label" parent="VsPage/HeaderPanel" unique_id=74052420]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 18.0
+offset_right = 360.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 30
+text = "● 主播身份确认"
+
+[node name="HeaderStep" type="Label" parent="VsPage/HeaderPanel" unique_id=329736280]
+layout_mode = 0
+offset_left = 866.0
+offset_top = 24.0
+offset_right = 1020.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "准备上台"
+
+[node name="PlayerVsCard" type="Panel" parent="VsPage" unique_id=1112999180 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 282.0
+offset_right = 724.0
+offset_bottom = 880.0
+
+[node name="PlayerAvatar" type="Panel" parent="VsPage/PlayerVsCard" unique_id=307198362]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 58.0
+offset_right = 370.0
+offset_bottom = 178.0
+
+[node name="PlayerName" type="Label" parent="VsPage/PlayerVsCard" unique_id=1256021922]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 220.0
+offset_right = 436.0
+offset_bottom = 266.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "P1 主播"
+horizontal_alignment = 1
+
+[node name="SkillA" type="Label" parent="VsPage/PlayerVsCard" unique_id=1595454807]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 500.0
+offset_right = 286.0
+offset_bottom = 540.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "技能一"
+horizontal_alignment = 1
+
+[node name="SkillIconA" type="Panel" parent="VsPage/PlayerVsCard" unique_id=1641739258]
+layout_mode = 0
+offset_left = 156.0
+offset_top = 388.0
+offset_right = 248.0
+offset_bottom = 480.0
+
+[node name="SkillB" type="Label" parent="VsPage/PlayerVsCard" unique_id=1372963810]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 500.0
+offset_right = 502.0
+offset_bottom = 540.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "技能二"
+horizontal_alignment = 1
+
+[node name="SkillIconB" type="Panel" parent="VsPage/PlayerVsCard" unique_id=476732879]
+layout_mode = 0
+offset_left = 372.0
+offset_top = 388.0
+offset_right = 464.0
+offset_bottom = 480.0
+
+[node name="VsLabel" type="Label" parent="VsPage" unique_id=2032588191]
+layout_mode = 0
+offset_left = 854.0
+offset_top = 514.0
+offset_right = 1066.0
+offset_bottom = 606.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "VS"
+horizontal_alignment = 1
+
+[node name="EnemyVsCard" type="Panel" parent="VsPage" unique_id=766255332 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 1196.0
+offset_top = 282.0
+offset_right = 1816.0
+offset_bottom = 880.0
+
+[node name="EnemyAvatar" type="Panel" parent="VsPage/EnemyVsCard" unique_id=282518688]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 58.0
+offset_right = 370.0
+offset_bottom = 178.0
+
+[node name="EnemyName" type="Label" parent="VsPage/EnemyVsCard" unique_id=676053526]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 220.0
+offset_right = 436.0
+offset_bottom = 266.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "默认对手"
+horizontal_alignment = 1
+
+[node name="SkillA" type="Label" parent="VsPage/EnemyVsCard" unique_id=586041590]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 500.0
+offset_right = 286.0
+offset_bottom = 540.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "蓄力一击"
+horizontal_alignment = 1
+
+[node name="SkillIconA" type="Panel" parent="VsPage/EnemyVsCard" unique_id=47774794]
+layout_mode = 0
+offset_left = 156.0
+offset_top = 388.0
+offset_right = 248.0
+offset_bottom = 480.0
+
+[node name="SkillB" type="Label" parent="VsPage/EnemyVsCard" unique_id=1454425550]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 500.0
+offset_right = 502.0
+offset_bottom = 540.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "观众共鸣"
+horizontal_alignment = 1
+
+[node name="SkillIconB" type="Panel" parent="VsPage/EnemyVsCard" unique_id=1333564340]
+layout_mode = 0
+offset_left = 372.0
+offset_top = 388.0
+offset_right = 464.0
+offset_bottom = 480.0
+
+[node name="BattlePage" type="Control" parent="." unique_id=990695991]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Title" type="Label" parent="BattlePage" unique_id=1203899136]
+layout_mode = 0
+offset_left = 710.0
+offset_top = 420.0
+offset_right = 1210.0
+offset_bottom = 500.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 56
+text = "战斗界面"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="BattlePage" unique_id=526147854]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 520.0
+offset_right = 1260.0
+offset_bottom = 570.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "示意占位，后续接入真实战斗场景。"
+horizontal_alignment = 1
+
+[node name="EndButton" type="Button" parent="BattlePage" unique_id=1873469277 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 810.0
+offset_top = 702.0
+offset_right = 1110.0
+offset_bottom = 774.0
+theme_override_font_sizes/font_size = 30
+text = "结束"
+
+[node name="SettlementPage" type="Control" parent="." unique_id=2063319486]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HeaderPanel" type="Panel" parent="SettlementPage" unique_id=650447424 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 48.0
+offset_right = 1876.0
+offset_bottom = 134.0
+
+[node name="HeaderTitle" type="Label" parent="SettlementPage/HeaderPanel" unique_id=1882979490]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 18.0
+offset_right = 360.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 30
+text = "● 直播复盘"
+
+[node name="WinBanner" type="Panel" parent="SettlementPage" unique_id=1703473855 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 266.0
+offset_top = 170.0
+offset_right = 1654.0
+offset_bottom = 332.0
+
+[node name="WinTitle" type="Label" parent="SettlementPage/WinBanner" unique_id=1798738569]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 42.0
+offset_right = 1328.0
+offset_bottom = 124.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 58
+text = "P1 主播 WIN"
+horizontal_alignment = 1
+
+[node name="PlayerPanel" type="Panel" parent="SettlementPage" unique_id=261312073 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 420.0
+offset_right = 684.0
+offset_bottom = 760.0
+
+[node name="PlayerName" type="Label" parent="SettlementPage/PlayerPanel" unique_id=237426918]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 34.0
+offset_right = 350.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "P1 主播"
+
+[node name="HeatTitle" type="Label" parent="SettlementPage/PlayerPanel" unique_id=1380200196]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 108.0
+offset_right = 200.0
+offset_bottom = 142.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 22
+text = "最终热度"
+
+[node name="HeatValue" type="Label" parent="SettlementPage/PlayerPanel" unique_id=358084370]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 154.0
+offset_right = 240.0
+offset_bottom = 216.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 48
+text = "128"
+
+[node name="ProgressBar" type="Panel" parent="SettlementPage/PlayerPanel" unique_id=1827196909 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 246.0
+offset_right = 424.0
+offset_bottom = 282.0
+
+[node name="Fill" type="Panel" parent="SettlementPage/PlayerPanel/ProgressBar" unique_id=955456487]
+layout_mode = 0
+offset_right = 292.0
+offset_bottom = 36.0
+
+[node name="DataPanel" type="Panel" parent="SettlementPage" unique_id=2098621885 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 420.0
+offset_right = 1208.0
+offset_bottom = 760.0
+
+[node name="DataTitle" type="Label" parent="SettlementPage/DataPanel" unique_id=403179925]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 34.0
+offset_right = 250.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "关键数据"
+
+[node name="DataLine1" type="Label" parent="SettlementPage/DataPanel" unique_id=1734922323]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 110.0
+offset_right = 420.0
+offset_bottom = 146.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "分差：+24"
+
+[node name="DataLine2" type="Label" parent="SettlementPage/DataPanel" unique_id=1332644721]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 166.0
+offset_right = 420.0
+offset_bottom = 202.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "最多连击：5"
+
+[node name="DataLine3" type="Label" parent="SettlementPage/DataPanel" unique_id=111940080]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 222.0
+offset_right = 420.0
+offset_bottom = 258.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "完成回合：10 / 10"
+
+[node name="DataLine4" type="Label" parent="SettlementPage/DataPanel" unique_id=142332181]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 278.0
+offset_right = 420.0
+offset_bottom = 314.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+text = "满盘状态：无人满盘"
+
+[node name="EnemyPanel" type="Panel" parent="SettlementPage" unique_id=178780338 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 1236.0
+offset_top = 420.0
+offset_right = 1734.0
+offset_bottom = 760.0
+
+[node name="EnemyName" type="Label" parent="SettlementPage/EnemyPanel" unique_id=810135575]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 34.0
+offset_right = 350.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "默认对手"
+
+[node name="HeatTitle" type="Label" parent="SettlementPage/EnemyPanel" unique_id=1737629743]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 108.0
+offset_right = 200.0
+offset_bottom = 142.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 22
+text = "最终热度"
+
+[node name="HeatValue" type="Label" parent="SettlementPage/EnemyPanel" unique_id=1607357176]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 154.0
+offset_right = 240.0
+offset_bottom = 216.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 48
+text = "104"
+
+[node name="ProgressBar" type="Panel" parent="SettlementPage/EnemyPanel" unique_id=695070305 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 246.0
+offset_right = 424.0
+offset_bottom = 282.0
+
+[node name="Fill" type="Panel" parent="SettlementPage/EnemyPanel/ProgressBar" unique_id=1833792502]
+layout_mode = 0
+offset_right = 235.0
+offset_bottom = 36.0
+
+[node name="ContinueButton" type="Button" parent="SettlementPage" unique_id=2103077060 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 810.0
+offset_top = 890.0
+offset_right = 1110.0
+offset_bottom = 962.0
+theme_override_font_sizes/font_size = 30
+text = "继续"
+
+[node name="ResultRankingPage" type="Control" parent="." unique_id=1679022200]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="RankingPanel" type="Panel" parent="ResultRankingPage" unique_id=2131289030 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 80.0
+offset_right = 1700.0
+offset_bottom = 888.0
+
+[node name="Title" type="Label" parent="ResultRankingPage/RankingPanel" unique_id=1784791457]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 32.0
+offset_right = 430.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 34
+text = "🏆 直播平台实时热度榜"
+
+[node name="SubTitle" type="Label" parent="ResultRankingPage/RankingPanel" unique_id=926787583]
+layout_mode = 0
+offset_left = 638.0
+offset_top = 40.0
+offset_right = 882.0
+offset_bottom = 78.0
+theme_override_colors/font_color = Color(0.42, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="HeaderRow" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=497463566 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 130.0
+offset_right = 1406.0
+offset_bottom = 194.0
+
+[node name="HeaderRank" type="Label" parent="ResultRankingPage/RankingPanel/HeaderRow" unique_id=1723649796]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 14.0
+offset_right = 122.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "排名"
+
+[node name="HeaderName" type="Label" parent="ResultRankingPage/RankingPanel/HeaderRow" unique_id=1033436528]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 14.0
+offset_right = 360.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "昵称"
+
+[node name="HeaderHeat" type="Label" parent="ResultRankingPage/RankingPanel/HeaderRow" unique_id=32909255]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 14.0
+offset_right = 720.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "热度"
+
+[node name="HeaderReward" type="Label" parent="ResultRankingPage/RankingPanel/HeaderRow" unique_id=1705806221]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 14.0
+offset_right = 1040.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "结算奖励"
+
+[node name="HeaderTime" type="Label" parent="ResultRankingPage/RankingPanel/HeaderRow" unique_id=1523134600]
+visible = false
+layout_mode = 0
+offset_left = 1160.0
+offset_top = 14.0
+offset_right = 1300.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 24
+text = "时间"
+
+[node name="Row1" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=2019328928 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 210.0
+offset_right = 1406.0
+offset_bottom = 282.0
+
+[node name="RankLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row1" unique_id=525271640]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#1"
+
+[node name="NameLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row1" unique_id=1234930845]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "花火主播"
+
+[node name="HeatLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row1" unique_id=944298713]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "128"
+
+[node name="RewardLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row1" unique_id=1863883895]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+100粉丝"
+
+[node name="Row2" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=1598063330 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 298.0
+offset_right = 1406.0
+offset_bottom = 370.0
+
+[node name="RankLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row2" unique_id=397633518]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#2"
+
+[node name="NameLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row2" unique_id=803657684]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "星光主播"
+
+[node name="HeatLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row2" unique_id=616363]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "116"
+
+[node name="RewardLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row2" unique_id=1112838464]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+100粉丝"
+
+[node name="Row3" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=1482760295 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 386.0
+offset_right = 1406.0
+offset_bottom = 458.0
+
+[node name="RankLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row3" unique_id=2125114147]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#3"
+
+[node name="NameLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row3" unique_id=28611674]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "玩家甲"
+
+[node name="HeatLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row3" unique_id=1118817531]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "109"
+
+[node name="RewardLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row3" unique_id=599983969]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+100粉丝"
+
+[node name="Row4" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=52419751 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 474.0
+offset_right = 1406.0
+offset_bottom = 546.0
+
+[node name="RankLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row4" unique_id=653158351]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#4"
+
+[node name="NameLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row4" unique_id=2012461310]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="HeatLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row4" unique_id=245241623]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RewardLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row4" unique_id=1206575065]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="Row5" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=899604924 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 562.0
+offset_right = 1406.0
+offset_bottom = 634.0
+
+[node name="RankLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row5" unique_id=1742558910]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#5"
+
+[node name="NameLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row5" unique_id=1328472797]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="HeatLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row5" unique_id=1564472013]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RewardLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row5" unique_id=1565569457]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="Row6" type="Panel" parent="ResultRankingPage/RankingPanel" unique_id=2136615146 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 650.0
+offset_right = 1406.0
+offset_bottom = 722.0
+
+[node name="RankLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row6" unique_id=2135155837]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#6"
+
+[node name="NameLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row6" unique_id=526385728]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="HeatLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row6" unique_id=2105614485]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RewardLabel" type="Label" parent="ResultRankingPage/RankingPanel/Row6" unique_id=270773239]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RetryButton" type="Button" parent="ResultRankingPage" unique_id=135769135 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 594.0
+offset_top = 920.0
+offset_right = 894.0
+offset_bottom = 992.0
+theme_override_font_sizes/font_size = 30
+text = "再来一局"
+
+[node name="LobbyButton" type="Button" parent="ResultRankingPage" unique_id=218795245 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1026.0
+offset_top = 920.0
+offset_right = 1326.0
+offset_bottom = 992.0
+theme_override_font_sizes/font_size = 30
+text = "返回大厅"
+
+[node name="RulesModal" type="Control" parent="." unique_id=698855619]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Backdrop" type="ColorRect" parent="RulesModal" unique_id=2057855936 groups=["modal_backdrops"]]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ModalPanel" type="Panel" parent="RulesModal" unique_id=23709527 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 150.0
+offset_right = 1560.0
+offset_bottom = 890.0
+
+[node name="Title" type="Label" parent="RulesModal/ModalPanel" unique_id=1552593788]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 34.0
+offset_right = 420.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 36
+text = "规则说明"
+
+[node name="CloseButton" type="Button" parent="RulesModal/ModalPanel" unique_id=2076272249 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1060.0
+offset_top = 28.0
+offset_right = 1140.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 18
+text = "关闭"
+
+[node name="RulesImage" type="Panel" parent="RulesModal/ModalPanel" unique_id=743813800 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 116.0
+offset_right = 542.0
+offset_bottom = 374.0
+
+[node name="BoardSketch" type="Panel" parent="RulesModal/ModalPanel/RulesImage" unique_id=815228830 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 38.0
+offset_right = 230.0
+offset_bottom = 188.0
+
+[node name="CardA" type="Panel" parent="RulesModal/ModalPanel/RulesImage" unique_id=183994833 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 56.0
+offset_right = 336.0
+offset_bottom = 130.0
+
+[node name="CardALabel" type="Label" parent="RulesModal/ModalPanel/RulesImage/CardA" unique_id=949600790]
+layout_mode = 0
+offset_top = 18.0
+offset_right = 56.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 28
+text = "3"
+horizontal_alignment = 1
+
+[node name="CardB" type="Panel" parent="RulesModal/ModalPanel/RulesImage" unique_id=406135823 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 56.0
+offset_right = 416.0
+offset_bottom = 130.0
+
+[node name="CardBLabel" type="Label" parent="RulesModal/ModalPanel/RulesImage/CardB" unique_id=933123358]
+layout_mode = 0
+offset_top = 18.0
+offset_right = 56.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 28
+text = "3"
+horizontal_alignment = 1
+
+[node name="RuleImageCaption" type="Label" parent="RulesModal/ModalPanel/RulesImage" unique_id=1599457431]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 168.0
+offset_right = 452.0
+offset_bottom = 214.0
+theme_override_font_sizes/font_size = 22
+text = "相邻结算热度"
+horizontal_alignment = 1
+
+[node name="RulesText" type="Label" parent="RulesModal/ModalPanel" unique_id=906439983]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 124.0
+offset_right = 1110.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(0.18, 0.18, 0.18, 1)
+theme_override_font_sizes/font_size = 26
+text = "1. 拖动才艺卡进入直播棋盘空位。
+2. 同类型、同数字相邻时触发结算并增加热度。
+3. 最左列或最上排入场会获得额外 +1 数字。
+4. 收纳卡会影响相邻同数字才艺卡。
+5. 本页为基础规则说明，后续可替换正式图片与文案。"
+autowrap_mode = 3
+
+[node name="RankingModal" type="Control" parent="." unique_id=1337088897]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Backdrop" type="ColorRect" parent="RankingModal" unique_id=148987795 groups=["modal_backdrops"]]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ModalPanel" type="Panel" parent="RankingModal" unique_id=291034692 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 132.0
+offset_right = 1700.0
+offset_bottom = 938.0
+
+[node name="Title" type="Label" parent="RankingModal/ModalPanel" unique_id=1579952082]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 32.0
+offset_right = 430.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 34
+text = "🏆 直播平台热度榜"
+
+[node name="CloseButton" type="Button" parent="RankingModal/ModalPanel" unique_id=1233500806 groups=["primary_buttons"]]
+layout_mode = 0
+offset_left = 1322.0
+offset_top = 30.0
+offset_right = 1424.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 18
+text = "返回大厅"
+
+[node name="HeaderRow" type="Panel" parent="RankingModal/ModalPanel" unique_id=509695556 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 130.0
+offset_right = 1406.0
+offset_bottom = 194.0
+
+[node name="HeaderRank" type="Label" parent="RankingModal/ModalPanel/HeaderRow" unique_id=119634958]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 14.0
+offset_right = 122.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "排名"
+
+[node name="HeaderName" type="Label" parent="RankingModal/ModalPanel/HeaderRow" unique_id=1121704379]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 14.0
+offset_right = 360.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "昵称"
+
+[node name="HeaderHeat" type="Label" parent="RankingModal/ModalPanel/HeaderRow" unique_id=1962977944]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 14.0
+offset_right = 720.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "热度"
+
+[node name="HeaderReward" type="Label" parent="RankingModal/ModalPanel/HeaderRow" unique_id=1981922048]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 14.0
+offset_right = 1040.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "结算奖励"
+
+[node name="HeaderTime" type="Label" parent="RankingModal/ModalPanel/HeaderRow" unique_id=940691605]
+visible = false
+layout_mode = 0
+offset_left = 1160.0
+offset_top = 14.0
+offset_right = 1300.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 24
+text = "时间"
+
+[node name="Row1" type="Panel" parent="RankingModal/ModalPanel" unique_id=1443063564 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 210.0
+offset_right = 1406.0
+offset_bottom = 282.0
+
+[node name="RankLabel" type="Label" parent="RankingModal/ModalPanel/Row1" unique_id=214184352]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#1"
+
+[node name="NameLabel" type="Label" parent="RankingModal/ModalPanel/Row1" unique_id=189942531]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "花火主播"
+
+[node name="HeatLabel" type="Label" parent="RankingModal/ModalPanel/Row1" unique_id=10850329]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "128"
+
+[node name="RewardLabel" type="Label" parent="RankingModal/ModalPanel/Row1" unique_id=1226923110]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+100粉丝"
+
+[node name="Row2" type="Panel" parent="RankingModal/ModalPanel" unique_id=628243030 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 298.0
+offset_right = 1406.0
+offset_bottom = 370.0
+
+[node name="RankLabel" type="Label" parent="RankingModal/ModalPanel/Row2" unique_id=1581726095]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#2"
+
+[node name="NameLabel" type="Label" parent="RankingModal/ModalPanel/Row2" unique_id=1679475625]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "星光主播"
+
+[node name="HeatLabel" type="Label" parent="RankingModal/ModalPanel/Row2" unique_id=1200282558]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "116"
+
+[node name="RewardLabel" type="Label" parent="RankingModal/ModalPanel/Row2" unique_id=780484157]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+100粉丝"
+
+[node name="Row3" type="Panel" parent="RankingModal/ModalPanel" unique_id=221167545 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 386.0
+offset_right = 1406.0
+offset_bottom = 458.0
+
+[node name="RankLabel" type="Label" parent="RankingModal/ModalPanel/Row3" unique_id=1226112395]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#3"
+
+[node name="NameLabel" type="Label" parent="RankingModal/ModalPanel/Row3" unique_id=237103097]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "玩家甲"
+
+[node name="HeatLabel" type="Label" parent="RankingModal/ModalPanel/Row3" unique_id=1267548404]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "109"
+
+[node name="RewardLabel" type="Label" parent="RankingModal/ModalPanel/Row3" unique_id=441278780]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+100粉丝"
+
+[node name="Row4" type="Panel" parent="RankingModal/ModalPanel" unique_id=880333629 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 474.0
+offset_right = 1406.0
+offset_bottom = 546.0
+
+[node name="RankLabel" type="Label" parent="RankingModal/ModalPanel/Row4" unique_id=2042510256]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#4"
+
+[node name="NameLabel" type="Label" parent="RankingModal/ModalPanel/Row4" unique_id=1754018588]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="HeatLabel" type="Label" parent="RankingModal/ModalPanel/Row4" unique_id=1312836788]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RewardLabel" type="Label" parent="RankingModal/ModalPanel/Row4" unique_id=632426595]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="Row5" type="Panel" parent="RankingModal/ModalPanel" unique_id=1638273962 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 562.0
+offset_right = 1406.0
+offset_bottom = 634.0
+
+[node name="RankLabel" type="Label" parent="RankingModal/ModalPanel/Row5" unique_id=935654287]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#5"
+
+[node name="NameLabel" type="Label" parent="RankingModal/ModalPanel/Row5" unique_id=352779915]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="HeatLabel" type="Label" parent="RankingModal/ModalPanel/Row5" unique_id=485860039]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RewardLabel" type="Label" parent="RankingModal/ModalPanel/Row5" unique_id=364318929]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="Row6" type="Panel" parent="RankingModal/ModalPanel" unique_id=552245622 groups=["outlined_panels"]]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 650.0
+offset_right = 1406.0
+offset_bottom = 722.0
+
+[node name="RankLabel" type="Label" parent="RankingModal/ModalPanel/Row6" unique_id=1571828696]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "#6"
+
+[node name="NameLabel" type="Label" parent="RankingModal/ModalPanel/Row6" unique_id=1447319550]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 18.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="HeatLabel" type="Label" parent="RankingModal/ModalPanel/Row6" unique_id=1609312353]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 18.0
+offset_right = 720.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
+
+[node name="RewardLabel" type="Label" parent="RankingModal/ModalPanel/Row6" unique_id=705893569]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 18.0
+offset_right = 1060.0
+offset_bottom = 54.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "--"
