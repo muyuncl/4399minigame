@@ -252,7 +252,7 @@ func _collect_same_normal_group(start: Vector2i) -> Array[Vector2i]:
 
 
 func _resolve_warehouse(cell: Vector2i, target_value: int) -> Dictionary:
-	# 收纳卡只看数字，不看才艺类型；自己不落到棋盘上，也不提供分数。
+	# 收纳卡只触发直接相邻的同数字普通卡；后续扩散要求同数字且同类型。
 	var visited := {}
 	var total_gained := 0
 	var steps := 0
@@ -264,7 +264,7 @@ func _resolve_warehouse(cell: Vector2i, target_value: int) -> Dictionary:
 		var card: CardData = get_card(next)
 		if card == null or not card.is_normal() or card.value != target_value:
 			continue
-		var group := _collect_same_value_group(next, target_value)
+		var group := _collect_same_value_and_type_group(next, target_value, card.talent_type)
 		for group_cell: Vector2i in group:
 			visited[group_cell] = true
 		groups.append(group)
@@ -284,7 +284,7 @@ func _resolve_warehouse(cell: Vector2i, target_value: int) -> Dictionary:
 	return {"gained": total_gained, "steps": steps, "events": []}
 
 
-func _collect_same_value_group(start: Vector2i, target_value: int) -> Array[Vector2i]:
+func _collect_same_value_and_type_group(start: Vector2i, target_value: int, target_type: String) -> Array[Vector2i]:
 	var group: Array[Vector2i] = []
 	var stack: Array[Vector2i] = [start]
 	var visited := {start: true}
@@ -298,7 +298,7 @@ func _collect_same_value_group(start: Vector2i, target_value: int) -> Array[Vect
 			var next_card: CardData = get_card(next)
 			if next_card == null or not next_card.is_normal():
 				continue
-			if next_card.value == target_value:
+			if next_card.value == target_value and next_card.talent_type == target_type:
 				visited[next] = true
 				stack.append(next)
 
