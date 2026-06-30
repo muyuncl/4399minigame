@@ -9,6 +9,7 @@ var hand: Array = []
 var score: int = 0
 var game_over: bool = false
 var last_message: String = ""
+var round_index: int = 1
 
 var _rng := RandomNumberGenerator.new()
 var _normal_cards: Array = []
@@ -29,7 +30,8 @@ func start_new_game(config_path: String = "res://data/card_pool.json") -> void:
 	hand.clear()
 	score = 0
 	game_over = false
-	last_message = "直播开始！把才艺卡拖到空格上。"
+	round_index = 1
+	last_message = "第 1 轮开始！把 5 张才艺卡放完。"
 	_fill_hand()
 
 
@@ -67,8 +69,6 @@ func place_from_hand(hand_index: int, cell: Vector2i) -> Dictionary:
 		animation_events.append_array(warehouse_result["events"])
 
 	score += gained
-	if hand.size() <= 1:
-		_fill_hand()
 
 	if not has_empty_cell():
 		game_over = true
@@ -76,6 +76,8 @@ func place_from_hand(hand_index: int, cell: Vector2i) -> Dictionary:
 	last_message = _build_result_message(played, gained, chain_steps)
 	if game_over:
 		last_message = "直播间排满啦！最终热度：%d。" % score
+	elif hand.is_empty():
+		last_message += " 本轮手牌已放完，等待双方都放完后发下一轮。"
 
 	return {
 		"ok": true,
@@ -103,6 +105,53 @@ func get_card(cell: Vector2i) -> CardData:
 
 func restart() -> void:
 	start_new_game()
+
+
+func is_round_done() -> bool:
+	return game_over or hand.is_empty()
+
+
+func start_next_round() -> bool:
+	if game_over or not hand.is_empty():
+		return false
+	if not has_empty_cell():
+		game_over = true
+		last_message = "直播间排满啦！最终热度：%d。" % score
+		return false
+
+	round_index += 1
+	_fill_hand()
+	last_message = "第 %d 轮开始！新的 5 张手牌已发好。" % round_index
+	return true
+
+
+func get_empty_cells() -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
+	for y in range(BOARD_SIZE):
+		for x in range(BOARD_SIZE):
+			if board[y][x] == null:
+				result.append(Vector2i(x, y))
+	return result
+
+
+func to_snapshot() -> Dictionary:
+	return {
+		"board": _cards_grid_to_snapshot(board),
+		"hand": _cards_to_snapshot(hand),
+		"score": score,
+		"game_over": game_over,
+		"last_message": last_message,
+		"round_index": round_index
+	}
+
+
+func apply_snapshot(snapshot: Dictionary) -> void:
+	board = _cards_grid_from_snapshot(snapshot.get("board", []))
+	hand = _cards_from_snapshot(snapshot.get("hand", []))
+	score = int(snapshot.get("score", 0))
+	game_over = bool(snapshot.get("game_over", false))
+	last_message = str(snapshot.get("last_message", ""))
+	round_index = int(snapshot.get("round_index", 1))
 
 
 func _load_config(config_path: String) -> void:
@@ -147,6 +196,49 @@ func _clear_board() -> void:
 		for _x in range(BOARD_SIZE):
 			row.append(null)
 		board.append(row)
+
+
+func _cards_grid_to_snapshot(source_board: Array) -> Array:
+	var rows := []
+	for y in range(BOARD_SIZE):
+		var row := []
+		for x in range(BOARD_SIZE):
+			var card: CardData = source_board[y][x]
+			row.append(null if card == null else card.to_snapshot())
+		rows.append(row)
+	return rows
+
+
+func _cards_grid_from_snapshot(source_board: Variant) -> Array:
+	var restored := []
+	for y in range(BOARD_SIZE):
+		var row := []
+		var source_row := []
+		if typeof(source_board) == TYPE_ARRAY and y < source_board.size() and typeof(source_board[y]) == TYPE_ARRAY:
+			source_row = source_board[y]
+		for x in range(BOARD_SIZE):
+			var card_data = null
+			if x < source_row.size():
+				card_data = source_row[x]
+			row.append(null if typeof(card_data) != TYPE_DICTIONARY else CardData.from_snapshot(card_data))
+		restored.append(row)
+	return restored
+
+
+func _cards_to_snapshot(cards: Array) -> Array:
+	var result := []
+	for card: CardData in cards:
+		result.append(null if card == null else card.to_snapshot())
+	return result
+
+
+func _cards_from_snapshot(cards: Variant) -> Array:
+	var result := []
+	if typeof(cards) != TYPE_ARRAY:
+		return result
+	for card_data in cards:
+		result.append(null if typeof(card_data) != TYPE_DICTIONARY else CardData.from_snapshot(card_data))
+	return result
 
 
 func _fill_hand() -> void:

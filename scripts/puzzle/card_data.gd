@@ -46,6 +46,28 @@ func clone() -> CardData:
     return card
 
 
+func to_snapshot() -> Dictionary:
+    return {
+        "kind": kind,
+        "talent_type": talent_type,
+        "label": label,
+        "short_label": short_label,
+        "color_hex": color_hex,
+        "value": value
+    }
+
+
+static func from_snapshot(data: Dictionary) -> CardData:
+    var card := CardData.new()
+    card.kind = int(data.get("kind", Kind.NORMAL))
+    card.talent_type = str(data.get("talent_type", ""))
+    card.label = str(data.get("label", ""))
+    card.short_label = str(data.get("short_label", ""))
+    card.color_hex = str(data.get("color_hex", "#ffffff"))
+    card.value = int(data.get("value", 1))
+    return card
+
+
 func is_normal() -> bool:
     return kind == Kind.NORMAL
 

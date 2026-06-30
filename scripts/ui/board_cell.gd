@@ -3,6 +3,8 @@ extends PanelContainer
 
 signal card_dropped(hand_index: int, cell: Vector2i)
 
+const CELL_SIZE := Vector2(96, 96)
+
 var cell: Vector2i = Vector2i.ZERO
 var card_data: CardData = null
 var drop_enabled: bool = true
@@ -13,7 +15,7 @@ var _empty_label: Label
 
 
 func _ready() -> void:
-    custom_minimum_size = Vector2(122, 122)
+    custom_minimum_size = CELL_SIZE
     _ensure_children()
     _refresh()
 
@@ -92,7 +94,7 @@ func _ensure_children() -> void:
 
     _card_view = CardView.new()
     _card_view.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    _card_view.custom_minimum_size = CardView.CARD_SIZE
+    _card_view.set_compact(true)
     _center.add_child(_card_view)
 
 

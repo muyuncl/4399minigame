@@ -4,10 +4,12 @@ extends PanelContainer
 signal manual_drag_started(card_view: CardView, hand_index: int, grab_position: Vector2)
 
 const CARD_SIZE := Vector2(88, 120)
+const BOARD_CARD_SIZE := Vector2(72, 92)
 
 var card_data: CardData = null
 var hand_index: int = -1
 var draggable: bool = true
+var compact: bool = false
 
 var _title_label: Label
 var _value_label: Label
@@ -16,13 +18,17 @@ var _hover_tween: Tween = null
 
 
 func _ready() -> void:
-    if custom_minimum_size == Vector2.ZERO:
-        custom_minimum_size = CARD_SIZE
+    _apply_size()
     _ensure_children()
     _refresh()
-    pivot_offset = CARD_SIZE * 0.5
     mouse_entered.connect(_on_mouse_entered)
     mouse_exited.connect(_on_mouse_exited)
+
+
+func set_compact(enabled: bool) -> void:
+    compact = enabled
+    _apply_size()
+    _apply_font_sizes()
 
 
 func set_card(card: CardData, index: int = -1, can_drag: bool = true) -> void:
@@ -89,6 +95,8 @@ func _ensure_children() -> void:
     _hint_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
     box.add_child(_hint_label)
 
+    _apply_font_sizes()
+
 
 func _refresh() -> void:
     if card_data == null:
@@ -111,20 +119,22 @@ func _apply_card_style(base_color: Color, is_special: bool) -> void:
     var style := StyleBoxFlat.new()
     style.bg_color = Color(0.93, 0.66, 0.42) if not is_special else Color(0.78, 0.48, 0.28)
     style.border_color = base_color.lightened(0.22) if not is_special else Color(0.38, 0.22, 0.14)
-    style.border_width_left = 4
-    style.border_width_top = 4
-    style.border_width_right = 4
-    style.border_width_bottom = 4
+    var border_width := 3 if compact else 4
+    style.border_width_left = border_width
+    style.border_width_top = border_width
+    style.border_width_right = border_width
+    style.border_width_bottom = border_width
     style.corner_radius_top_left = 4
     style.corner_radius_top_right = 4
     style.corner_radius_bottom_left = 4
     style.corner_radius_bottom_right = 4
     style.shadow_color = Color(0.18, 0.12, 0.08, 0.45)
     style.shadow_size = 3
-    style.content_margin_left = 6
-    style.content_margin_right = 6
-    style.content_margin_top = 6
-    style.content_margin_bottom = 6
+    var margin := 4 if compact else 6
+    style.content_margin_left = margin
+    style.content_margin_right = margin
+    style.content_margin_top = margin
+    style.content_margin_bottom = margin
     add_theme_stylebox_override("panel", style)
 
     _title_label.add_theme_color_override("font_color", base_color.lightened(0.95))
@@ -165,3 +175,16 @@ func _apply_empty_style() -> void:
     style.corner_radius_bottom_left = 4
     style.corner_radius_bottom_right = 4
     add_theme_stylebox_override("panel", style)
+
+
+func _apply_size() -> void:
+    custom_minimum_size = BOARD_CARD_SIZE if compact else CARD_SIZE
+    pivot_offset = custom_minimum_size * 0.5
+
+
+func _apply_font_sizes() -> void:
+    if _title_label == null:
+        return
+    _title_label.add_theme_font_size_override("font_size", 22 if compact else 28)
+    _value_label.add_theme_font_size_override("font_size", 28 if compact else 36)
+    _hint_label.add_theme_font_size_override("font_size", 10 if compact else 14)
