@@ -1,3 +1,13 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Local export/build outputs
+builds/
+*.exe
+*.zip
+*.apk
+*.pck
+export.log
+export_pack.log
+android_export_check.log
