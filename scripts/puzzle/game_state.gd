@@ -2,7 +2,7 @@ class_name GameState
 extends RefCounted
 
 const BOARD_SIZE := 6
-const HAND_SIZE := 5
+const HAND_SIZE := 4
 
 var board: Array = []
 var hand: Array = []
@@ -31,8 +31,7 @@ func start_new_game(config_path: String = "res://data/card_pool.json") -> void:
 	score = 0
 	game_over = false
 	round_index = 1
-	last_message = "第 1 轮开始！把 5 张才艺卡放完。"
-	_fill_hand()
+	last_message = "第 1 轮开始！从中间抢 4 张牌。"
 
 
 func place_from_hand(hand_index: int, cell: Vector2i) -> Dictionary:
@@ -77,7 +76,7 @@ func place_from_hand(hand_index: int, cell: Vector2i) -> Dictionary:
 	if game_over:
 		last_message = "直播间排满啦！最终热度：%d。" % score
 	elif hand.is_empty():
-		last_message += " 本轮手牌已放完，等待双方都放完后发下一轮。"
+		last_message += " 本轮手牌已放完，等待双方都放完后进入下一轮。"
 
 	return {
 		"ok": true,
@@ -120,8 +119,7 @@ func start_next_round() -> bool:
 		return false
 
 	round_index += 1
-	_fill_hand()
-	last_message = "第 %d 轮开始！新的 5 张手牌已发好。" % round_index
+	last_message = "第 %d 轮开始！从中间抢 4 张牌。" % round_index
 	return true
 
 
@@ -132,6 +130,24 @@ func get_empty_cells() -> Array[Vector2i]:
 			if board[y][x] == null:
 				result.append(Vector2i(x, y))
 	return result
+
+
+func can_claim_card() -> bool:
+	return not game_over and hand.size() < HAND_SIZE
+
+
+func claim_card(card: CardData) -> bool:
+	if not can_claim_card() or card == null:
+		return false
+	hand.append(card.clone())
+	last_message = "已抢到 %d/%d 张手牌。" % [hand.size(), HAND_SIZE]
+	return true
+
+
+func draw_card() -> CardData:
+	if _normal_cards.is_empty():
+		_load_config("res://data/card_pool.json")
+	return _draw_card()
 
 
 func to_snapshot() -> Dictionary:

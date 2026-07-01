@@ -10,6 +10,8 @@ var card_data: CardData = null
 var hand_index: int = -1
 var draggable: bool = true
 var compact: bool = false
+var _selection_outline_enabled := false
+var _selection_outline_color := Color.TRANSPARENT
 
 var _title_label: Label
 var _value_label: Label
@@ -37,6 +39,12 @@ func set_card(card: CardData, index: int = -1, can_drag: bool = true) -> void:
     draggable = can_drag
     mouse_default_cursor_shape = Control.CURSOR_DRAG if draggable else Control.CURSOR_ARROW
     _ensure_children()
+    _refresh()
+
+
+func set_selection_outline(color: Color, enabled: bool = true) -> void:
+    _selection_outline_color = color
+    _selection_outline_enabled = enabled
     _refresh()
 
 
@@ -118,8 +126,8 @@ func _refresh() -> void:
 func _apply_card_style(base_color: Color, is_special: bool) -> void:
     var style := StyleBoxFlat.new()
     style.bg_color = Color(0.93, 0.66, 0.42) if not is_special else Color(0.78, 0.48, 0.28)
-    style.border_color = base_color.lightened(0.22) if not is_special else Color(0.38, 0.22, 0.14)
-    var border_width := 3 if compact else 4
+    style.border_color = _selection_outline_color if _selection_outline_enabled else (base_color.lightened(0.22) if not is_special else Color(0.38, 0.22, 0.14))
+    var border_width := 5 if _selection_outline_enabled else (3 if compact else 4)
     style.border_width_left = border_width
     style.border_width_top = border_width
     style.border_width_right = border_width

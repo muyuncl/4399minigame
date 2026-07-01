@@ -83,6 +83,14 @@ func is_online() -> bool:
     return _mode != "offline"
 
 
+func is_host() -> bool:
+    return _mode == "host"
+
+
+func is_client() -> bool:
+    return _mode == "client"
+
+
 func get_status() -> String:
     return _status
 

@@ -4,6 +4,9 @@ const PLAYER_SELF := 0
 const PLAYER_REMOTE := 1
 const MODE_SINGLE := 0
 const MODE_ONLINE := 1
+const DRAFT_POOL_SIZE := 10
+const ROUND_SECONDS := 30.0
+const DraftPoolViewScript := preload("res://scripts/ui/draft_pool_view.gd")
 
 var _self_state := GameState.new()
 var _remote_state := GameState.new()
@@ -11,8 +14,10 @@ var _self_board_view: BoardView
 var _remote_board_view: BoardView
 var _self_hand_view: HandView
 var _remote_hand_view: HandView
+var _draft_pool_view
 var _score_label: Label
 var _message_label: Label
+var _timer_label: Label
 var _network_status_label: Label
 var _local_ip_label: Label
 var _address_input: LineEdit
@@ -29,6 +34,13 @@ var _drag_original_parent: Node = null
 var _drag_original_index: int = -1
 var _drag_offset := Vector2.ZERO
 var _animating := false
+var _draft_pool: Array = []
+var _self_claimed_count := 0
+var _remote_claimed_count := 0
+var _self_selected_draft_index := -1
+var _remote_selected_draft_index := -1
+var _round_time_left := ROUND_SECONDS
+var _round_timer_running := false
 
 
 func _ready() -> void:
@@ -36,17 +48,19 @@ func _ready() -> void:
     _network = get_node("/root/NetworkManager")
     _connect_network_signals()
     _build_ui()
-    _self_state.start_new_game()
-    _remote_state.start_new_game()
-    _remote_state.last_message = "单机对手已准备，会随机放牌。"
-    _refresh_all()
-    _refresh_mode_buttons()
+    _start_new_match()
     _refresh_network_status(_network.get_status())
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
     if _drag_card != null:
         _move_drag_card(get_global_mouse_position())
+    if _round_timer_running:
+        _round_time_left = max(0.0, _round_time_left - delta)
+        _refresh_timer()
+        if _round_time_left <= 0.0:
+            _round_timer_running = false
+            _on_round_timer_finished()
 
 
 func _input(event: InputEvent) -> void:
@@ -86,49 +100,43 @@ func _build_ui() -> void:
 
     main_box.add_child(_build_header())
 
-    var content := HBoxContainer.new()
-    content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-    content.add_theme_constant_override("separation", 10)
-    main_box.add_child(content)
+    var play_panel := _make_panel(Color(0.49, 0.74, 0.36), Color(0.37, 0.24, 0.15), 6)
+    play_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    play_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    main_box.add_child(play_panel)
 
-    _self_hand_view = _build_hand_panel(PLAYER_SELF, "我的手牌", content)
+    var play_margin := MarginContainer.new()
+    play_margin.add_theme_constant_override("margin_left", 10)
+    play_margin.add_theme_constant_override("margin_top", 14)
+    play_margin.add_theme_constant_override("margin_right", 10)
+    play_margin.add_theme_constant_override("margin_bottom", 14)
+    play_panel.add_child(play_margin)
 
-    var board_panel := _make_panel(Color(0.49, 0.74, 0.36), Color(0.37, 0.24, 0.15), 6)
-    board_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    board_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-    content.add_child(board_panel)
+    var play_row := HBoxContainer.new()
+    play_row.alignment = BoxContainer.ALIGNMENT_CENTER
+    play_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    play_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    play_row.add_theme_constant_override("separation", 10)
+    play_margin.add_child(play_row)
 
-    var board_margin := MarginContainer.new()
-    board_margin.add_theme_constant_override("margin_left", 10)
-    board_margin.add_theme_constant_override("margin_top", 18)
-    board_margin.add_theme_constant_override("margin_right", 10)
-    board_margin.add_theme_constant_override("margin_bottom", 18)
-    board_panel.add_child(board_margin)
-
-    var boards_row := HBoxContainer.new()
-    boards_row.alignment = BoxContainer.ALIGNMENT_CENTER
-    boards_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    boards_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
-    boards_row.add_theme_constant_override("separation", 14)
-    board_margin.add_child(boards_row)
-
-    _self_board_view = _build_board_column("我的舞台", boards_row, PLAYER_SELF)
-    _remote_board_view = _build_board_column("对方舞台", boards_row, PLAYER_REMOTE)
-
-    _remote_hand_view = _build_hand_panel(PLAYER_REMOTE, "对方手牌", content)
+    _self_board_view = _build_board_column("我的舞台", play_row, true)
+    _self_hand_view = _build_hand_panel("我的手牌", play_row, true)
+    _draft_pool_view = _build_draft_panel(play_row)
+    _remote_hand_view = _build_hand_panel("对方手牌", play_row, false)
+    _remote_board_view = _build_board_column("对方舞台", play_row, false)
 
 
-func _build_hand_panel(player: int, title_text: String, parent: Container) -> HandView:
+func _build_hand_panel(title_text: String, parent: Container, can_operate: bool) -> HandView:
     var side_panel := _make_panel(Color(0.48, 0.73, 0.34), Color(0.28, 0.47, 0.2), 4)
-    side_panel.custom_minimum_size = Vector2(168, 0)
+    side_panel.custom_minimum_size = Vector2(132, 0)
     side_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
     parent.add_child(side_panel)
 
     var side_margin := MarginContainer.new()
-    side_margin.add_theme_constant_override("margin_left", 10)
-    side_margin.add_theme_constant_override("margin_top", 12)
-    side_margin.add_theme_constant_override("margin_right", 10)
-    side_margin.add_theme_constant_override("margin_bottom", 12)
+    side_margin.add_theme_constant_override("margin_left", 8)
+    side_margin.add_theme_constant_override("margin_top", 10)
+    side_margin.add_theme_constant_override("margin_right", 8)
+    side_margin.add_theme_constant_override("margin_bottom", 10)
     side_panel.add_child(side_margin)
 
     var side_box := VBoxContainer.new()
@@ -138,32 +146,32 @@ func _build_hand_panel(player: int, title_text: String, parent: Container) -> Ha
     var hand_title := Label.new()
     hand_title.text = title_text
     hand_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    hand_title.add_theme_font_size_override("font_size", 22)
+    hand_title.add_theme_font_size_override("font_size", 20)
     hand_title.add_theme_color_override("font_color", Color(0.16, 0.1, 0.06))
     side_box.add_child(hand_title)
 
     var hand_view := HandView.new()
     hand_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
-    if player == PLAYER_SELF:
+    if can_operate:
         hand_view.card_drag_started.connect(_on_hand_card_drag_started)
     side_box.add_child(hand_view)
 
     var restart_button := Button.new()
-    restart_button.custom_minimum_size = Vector2(0, 36)
+    restart_button.custom_minimum_size = Vector2(0, 34)
     side_box.add_child(restart_button)
 
-    if player == PLAYER_SELF:
+    if can_operate:
         _self_restart_button = restart_button
         restart_button.pressed.connect(_on_restart_pressed)
     else:
         _remote_restart_button = restart_button
         restart_button.disabled = true
-        restart_button.text = "等待同步"
+        restart_button.text = "只读"
 
     return hand_view
 
 
-func _build_board_column(title_text: String, parent: Container, player: int) -> BoardView:
+func _build_board_column(title_text: String, parent: Container, can_drop: bool) -> BoardView:
     var board_box := VBoxContainer.new()
     board_box.alignment = BoxContainer.ALIGNMENT_CENTER
     board_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -200,11 +208,51 @@ func _build_board_column(title_text: String, parent: Container, player: int) -> 
     var board_view := BoardView.new()
     board_view.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
     board_view.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-    if player == PLAYER_SELF:
+    if can_drop:
         board_view.card_dropped.connect(_on_card_dropped)
     field_margin.add_child(board_view)
     board_view.build()
     return board_view
+
+
+func _build_draft_panel(parent: Container) -> Control:
+    var draft_panel := _make_panel(Color(0.57, 0.79, 0.42), Color(0.2, 0.12, 0.07), 4)
+    draft_panel.custom_minimum_size = Vector2(190, 0)
+    draft_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    parent.add_child(draft_panel)
+
+    var draft_margin := MarginContainer.new()
+    draft_margin.add_theme_constant_override("margin_left", 10)
+    draft_margin.add_theme_constant_override("margin_top", 10)
+    draft_margin.add_theme_constant_override("margin_right", 10)
+    draft_margin.add_theme_constant_override("margin_bottom", 10)
+    draft_panel.add_child(draft_margin)
+
+    var draft_box := VBoxContainer.new()
+    draft_box.alignment = BoxContainer.ALIGNMENT_CENTER
+    draft_box.add_theme_constant_override("separation", 8)
+    draft_margin.add_child(draft_box)
+
+    var title := Label.new()
+    title.text = "抢手牌区"
+    title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    title.add_theme_font_size_override("font_size", 20)
+    title.add_theme_color_override("font_color", Color(0.12, 0.08, 0.04))
+    draft_box.add_child(title)
+
+    var callout := Label.new()
+    callout.text = "抢！"
+    callout.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    callout.add_theme_font_size_override("font_size", 42)
+    callout.add_theme_color_override("font_color", Color(0.04, 0.02, 0.01))
+    draft_box.add_child(callout)
+
+    var draft_view = DraftPoolViewScript.new()
+    draft_view.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+    draft_view.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    draft_view.card_clicked.connect(_on_draft_card_clicked)
+    draft_box.add_child(draft_view)
+    return draft_view
 
 
 func _build_header() -> Control:
@@ -217,7 +265,7 @@ func _build_header() -> Control:
 
     var title := Label.new()
     title.text = "直播间才艺热度"
-    title.add_theme_font_size_override("font_size", 34)
+    title.add_theme_font_size_override("font_size", 32)
     title.add_theme_color_override("font_color", Color(0.98, 0.96, 0.86))
     title.add_theme_color_override("font_shadow_color", Color(0.16, 0.1, 0.06, 0.7))
     title.add_theme_constant_override("shadow_offset_x", 2)
@@ -225,19 +273,26 @@ func _build_header() -> Control:
     title_box.add_child(title)
 
     _message_label = Label.new()
-    _message_label.text = ""
     _message_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    _message_label.add_theme_font_size_override("font_size", 16)
+    _message_label.add_theme_font_size_override("font_size", 15)
     _message_label.add_theme_color_override("font_color", Color(0.18, 0.12, 0.08))
     title_box.add_child(_message_label)
+
+    _timer_label = Label.new()
+    _timer_label.custom_minimum_size = Vector2(150, 58)
+    _timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    _timer_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    _timer_label.add_theme_font_size_override("font_size", 42)
+    _timer_label.add_theme_color_override("font_color", Color(0.05, 0.03, 0.02))
+    header.add_child(_timer_label)
 
     header.add_child(_build_network_panel())
 
     _score_label = Label.new()
-    _score_label.custom_minimum_size = Vector2(300, 58)
+    _score_label.custom_minimum_size = Vector2(260, 58)
     _score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     _score_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-    _score_label.add_theme_font_size_override("font_size", 30)
+    _score_label.add_theme_font_size_override("font_size", 28)
     _score_label.add_theme_color_override("font_color", Color(0.12, 0.08, 0.04))
     header.add_child(_score_label)
 
@@ -246,12 +301,12 @@ func _build_header() -> Control:
 
 func _build_network_panel() -> Control:
     var panel := VBoxContainer.new()
-    panel.custom_minimum_size = Vector2(430, 0)
+    panel.custom_minimum_size = Vector2(410, 0)
     panel.add_theme_constant_override("separation", 4)
 
     _network_status_label = Label.new()
     _network_status_label.text = "离线"
-    _network_status_label.add_theme_font_size_override("font_size", 14)
+    _network_status_label.add_theme_font_size_override("font_size", 13)
     _network_status_label.add_theme_color_override("font_color", Color(0.14, 0.09, 0.05))
     panel.add_child(_network_status_label)
 
@@ -268,44 +323,40 @@ func _build_network_panel() -> Control:
     _single_button = Button.new()
     _single_button.text = "单机"
     _single_button.toggle_mode = true
-    _single_button.custom_minimum_size = Vector2(74, 30)
+    _single_button.custom_minimum_size = Vector2(70, 30)
     _single_button.pressed.connect(_on_single_mode_pressed)
     mode_row.add_child(_single_button)
 
     _online_button = Button.new()
     _online_button.text = "联机"
     _online_button.toggle_mode = true
-    _online_button.custom_minimum_size = Vector2(74, 30)
+    _online_button.custom_minimum_size = Vector2(70, 30)
     _online_button.pressed.connect(_on_online_mode_pressed)
     mode_row.add_child(_online_button)
 
-    var row := HBoxContainer.new()
-    row.add_theme_constant_override("separation", 6)
-    panel.add_child(row)
-
     var host_button := Button.new()
     host_button.text = "开房"
-    host_button.custom_minimum_size = Vector2(64, 32)
+    host_button.custom_minimum_size = Vector2(62, 30)
     host_button.pressed.connect(_on_host_pressed)
-    row.add_child(host_button)
+    mode_row.add_child(host_button)
 
     _address_input = LineEdit.new()
     _address_input.placeholder_text = "房主 IP"
     _address_input.text = "127.0.0.1"
-    _address_input.custom_minimum_size = Vector2(150, 32)
-    row.add_child(_address_input)
+    _address_input.custom_minimum_size = Vector2(130, 30)
+    mode_row.add_child(_address_input)
 
     var join_button := Button.new()
     join_button.text = "加入"
-    join_button.custom_minimum_size = Vector2(64, 32)
+    join_button.custom_minimum_size = Vector2(62, 30)
     join_button.pressed.connect(_on_join_pressed)
-    row.add_child(join_button)
+    mode_row.add_child(join_button)
 
     var close_button := Button.new()
     close_button.text = "断开"
-    close_button.custom_minimum_size = Vector2(64, 32)
+    close_button.custom_minimum_size = Vector2(62, 30)
     close_button.pressed.connect(_on_disconnect_pressed)
-    row.add_child(close_button)
+    mode_row.add_child(close_button)
 
     return panel
 
@@ -329,6 +380,27 @@ func _make_style(bg_color: Color, border_color: Color, border_width: int, radius
     style.corner_radius_bottom_left = radius
     style.corner_radius_bottom_right = radius
     return style
+
+
+func _start_new_match() -> void:
+    _self_state.start_new_game()
+    _remote_state.start_new_game()
+    _remote_state.last_message = "单机对手已准备，会随机抢牌。"
+    _self_claimed_count = 0
+    _remote_claimed_count = 0
+    _clear_draft_selections()
+    _refresh_draft_pool()
+    _refresh_mode_buttons()
+    _refresh_all()
+
+
+func _refresh_draft_pool() -> void:
+    _draft_pool.clear()
+    for _i in range(DRAFT_POOL_SIZE):
+        _draft_pool.append(_self_state.draw_card())
+    _clear_draft_selections()
+    _round_time_left = ROUND_SECONDS
+    _round_timer_running = true
 
 
 func _on_host_pressed() -> void:
@@ -357,17 +429,15 @@ func _set_game_mode(mode: int, reset_states: bool = true) -> void:
     _game_mode = mode
     if mode == MODE_SINGLE:
         _network.close_connection(false)
-        if reset_states:
-            _self_state.start_new_game()
-            _remote_state.start_new_game()
-        _remote_state.last_message = "单机对手已准备，会随机放牌。"
+    if reset_states:
+        _start_new_match()
     else:
-        if reset_states:
-            _self_state.start_new_game()
-            _remote_state.start_new_game()
+        _refresh_mode_buttons()
+        _refresh_all()
+    if mode == MODE_ONLINE:
         _remote_state.last_message = "等待附近玩家加入。"
-
-    _refresh_mode_buttons()
+    elif mode == MODE_SINGLE:
+        _remote_state.last_message = "单机对手已准备，会随机抢牌。"
     _refresh_all()
 
 
@@ -379,17 +449,77 @@ func _refresh_mode_buttons() -> void:
 
 
 func _on_network_connection_ready() -> void:
-    _send_self_snapshot()
+    _send_match_snapshot()
 
 
 func _on_remote_state_received(snapshot: Dictionary) -> void:
     if _game_mode != MODE_ONLINE:
         return
-    _remote_state.apply_snapshot(snapshot)
+
+    var message_type := str(snapshot.get("type", "state"))
+    if message_type == "select":
+        _remote_state.apply_snapshot(snapshot.get("player", {}))
+        _remote_claimed_count = int(snapshot.get("claimed_count", _remote_claimed_count))
+        var requested_index := int(snapshot.get("draft_index", -1))
+        _remote_selected_draft_index = requested_index if _can_remote_select(requested_index) else -1
+        _sanitize_draft_selections()
+        _refresh_all()
+        if _network.is_host():
+            _send_match_snapshot()
+        return
+
+    if message_type == "claim":
+        if _network.is_host():
+            var draft_index := int(snapshot.get("draft_index", -1))
+            var claim_allowed := draft_index >= 0 and draft_index < _draft_pool.size() and _draft_pool[draft_index] != null and _self_selected_draft_index != draft_index
+            if claim_allowed:
+                _remote_state.apply_snapshot(snapshot.get("player", {}))
+                _remote_claimed_count = int(snapshot.get("claimed_count", _remote_claimed_count))
+                _draft_pool[draft_index] = null
+                _remote_selected_draft_index = -1
+                var advanced_claim := _try_start_next_round()
+                _sanitize_draft_selections()
+                _refresh_all()
+                _send_match_snapshot()
+                if advanced_claim:
+                    _send_match_snapshot()
+            else:
+                _send_match_snapshot()
+        return
+
+    if message_type == "player_state":
+        _remote_state.apply_snapshot(snapshot.get("player", {}))
+        _remote_claimed_count = int(snapshot.get("claimed_count", _remote_claimed_count))
+        if snapshot.has("selected_index"):
+            var player_selected_index := int(snapshot.get("selected_index", -1))
+            _remote_selected_draft_index = player_selected_index if _can_remote_select(player_selected_index) else -1
+        var advanced_player := _try_start_next_round()
+        _sanitize_draft_selections()
+        _refresh_all()
+        if _network.is_host() or advanced_player:
+            _send_match_snapshot()
+        return
+
+    var player_snapshot: Dictionary = snapshot.get("player", snapshot)
+    _remote_state.apply_snapshot(player_snapshot)
+    _remote_claimed_count = int(snapshot.get("claimed_count", _remote_claimed_count))
+
+    if snapshot.has("draft_pool") and _network.is_client():
+        _draft_pool = _cards_from_snapshot(snapshot.get("draft_pool", []))
+    if snapshot.has("self_claimed_count") and _network.is_client():
+        _self_claimed_count = int(snapshot.get("self_claimed_count", _self_claimed_count))
+    if snapshot.has("round_time_left") and _network.is_client():
+        _round_time_left = float(snapshot.get("round_time_left", _round_time_left))
+    if snapshot.has("self_selected_index") and _network.is_client():
+        _self_selected_draft_index = int(snapshot.get("self_selected_index", _self_selected_draft_index))
+    if snapshot.has("remote_selected_index") and _network.is_client():
+        _remote_selected_draft_index = int(snapshot.get("remote_selected_index", _remote_selected_draft_index))
+
     var advanced := _try_start_next_round()
+    _sanitize_draft_selections()
     _refresh_all()
     if advanced:
-        _send_self_snapshot()
+        _send_match_snapshot()
 
 
 func _on_network_closed() -> void:
@@ -397,6 +527,8 @@ func _on_network_closed() -> void:
         return
     _remote_state.start_new_game()
     _remote_state.last_message = "对方未连接。"
+    _remote_claimed_count = 0
+    _remote_selected_draft_index = -1
     _refresh_all()
 
 
@@ -406,6 +538,161 @@ func _refresh_network_status(message: String) -> void:
     _network_status_label.text = message
     if _local_ip_label != null:
         _local_ip_label.text = "本机 IP：" + _network.get_local_ip_hint()
+
+
+func _on_draft_card_clicked(index: int) -> void:
+    if _self_selected_draft_index == index:
+        _confirm_draft_card(index)
+        return
+    if not _can_select_self(index):
+        return
+    _self_selected_draft_index = index
+    _sanitize_draft_selections()
+    _refresh_all()
+    _send_selection_update()
+
+
+func _confirm_draft_card(index: int) -> void:
+    if not _can_claim_self(index):
+        return
+    var card: CardData = _draft_pool[index]
+    if not _self_state.claim_card(card):
+        return
+    _draft_pool[index] = null
+    _self_claimed_count += 1
+    _self_selected_draft_index = -1
+
+    if _game_mode == MODE_SINGLE:
+        _ai_claim_cards(_self_claimed_count - _remote_claimed_count)
+
+    _sanitize_draft_selections()
+    _refresh_all()
+    _send_claim_update(index)
+
+
+func _can_select_self(index: int) -> bool:
+    if _animating or _self_state.game_over:
+        return false
+    if _self_claimed_count >= GameState.HAND_SIZE or _self_state.hand.size() >= GameState.HAND_SIZE:
+        return false
+    if index < 0 or index >= _draft_pool.size():
+        return false
+    if _draft_pool[index] == null:
+        return false
+    return _remote_selected_draft_index != index
+
+
+func _can_claim_self(index: int) -> bool:
+    return _self_selected_draft_index == index and _can_select_self(index)
+
+
+func _can_remote_select(index: int) -> bool:
+    if index == -1:
+        return true
+    if index < 0 or index >= _draft_pool.size():
+        return false
+    if _draft_pool[index] == null:
+        return false
+    if _self_selected_draft_index == index:
+        return false
+    if _remote_claimed_count >= GameState.HAND_SIZE or _remote_state.hand.size() >= GameState.HAND_SIZE:
+        return false
+    return true
+
+
+func _clear_draft_selections() -> void:
+    _self_selected_draft_index = -1
+    _remote_selected_draft_index = -1
+
+
+func _sanitize_draft_selections() -> void:
+    _self_selected_draft_index = _normalize_draft_selection(_self_selected_draft_index)
+    _remote_selected_draft_index = _normalize_draft_selection(_remote_selected_draft_index)
+    if _self_selected_draft_index != -1 and _self_selected_draft_index == _remote_selected_draft_index:
+        if _network != null and _network.is_host():
+            _remote_selected_draft_index = -1
+        else:
+            _self_selected_draft_index = -1
+
+
+func _normalize_draft_selection(index: int) -> int:
+    if index < 0 or index >= _draft_pool.size():
+        return -1
+    if _draft_pool[index] == null:
+        return -1
+    return index
+
+
+func _ai_claim_cards(count: int) -> void:
+    var claimed := 0
+    while claimed < count and _remote_state.can_claim_card():
+        var indexes := _available_draft_indexes(_self_selected_draft_index)
+        if indexes.is_empty():
+            return
+        var index: int = indexes[_ai_rng.randi_range(0, indexes.size() - 1)]
+        var card: CardData = _draft_pool[index]
+        if _remote_state.claim_card(card):
+            _draft_pool[index] = null
+            _remote_claimed_count += 1
+            claimed += 1
+
+
+func _available_draft_indexes(blocked_index: int = -1) -> Array[int]:
+    var indexes: Array[int] = []
+    for i in range(_draft_pool.size()):
+        if _draft_pool[i] != null and i != blocked_index:
+            indexes.append(i)
+    return indexes
+
+
+func _on_round_timer_finished() -> void:
+    _self_state.last_message = "30 秒到，未抢满的手牌会自动补齐。"
+    _clear_draft_selections()
+    _auto_claim_missing_for_self()
+    if _game_mode == MODE_SINGLE:
+        _ai_claim_cards(GameState.HAND_SIZE - _remote_claimed_count)
+    _refresh_all()
+    _send_match_snapshot()
+
+
+func _send_claim_update(index: int) -> void:
+    if _game_mode != MODE_ONLINE or not _network.has_remote_peer():
+        return
+    if _network.is_client():
+        _network.send_player_snapshot({
+            "type": "claim",
+            "draft_index": index,
+            "player": _self_state.to_snapshot(),
+            "claimed_count": _self_claimed_count,
+            "selected_index": _self_selected_draft_index
+        })
+    else:
+        _send_match_snapshot()
+
+
+func _send_selection_update() -> void:
+    if _game_mode != MODE_ONLINE or not _network.has_remote_peer():
+        return
+    if _network.is_client():
+        _network.send_player_snapshot({
+            "type": "select",
+            "draft_index": _self_selected_draft_index,
+            "player": _self_state.to_snapshot(),
+            "claimed_count": _self_claimed_count
+        })
+    else:
+        _send_match_snapshot()
+
+
+func _auto_claim_missing_for_self() -> void:
+    while _self_state.can_claim_card():
+        var indexes := _available_draft_indexes(_remote_selected_draft_index)
+        if indexes.is_empty():
+            return
+        var index: int = indexes[_ai_rng.randi_range(0, indexes.size() - 1)]
+        if _self_state.claim_card(_draft_pool[index]):
+            _draft_pool[index] = null
+            _self_claimed_count += 1
 
 
 func _on_card_dropped(hand_index: int, cell: Vector2i) -> void:
@@ -418,7 +705,7 @@ func _on_card_dropped(hand_index: int, cell: Vector2i) -> void:
 
 
 func _on_hand_card_drag_started(card_view: CardView, hand_index: int, grab_position: Vector2) -> void:
-    if _drag_card != null or _self_state.game_over or _animating:
+    if _drag_card != null or _self_state.game_over or _self_state.hand.is_empty() or _animating:
         return
 
     _drag_card = card_view
@@ -459,26 +746,27 @@ func _finish_manual_drag(mouse_position: Vector2) -> void:
 
 
 func _after_self_successful_play() -> void:
-    _send_self_snapshot()
     if _game_mode == MODE_SINGLE:
         _play_singleplayer_opponent()
     var advanced := _try_start_next_round()
     _refresh_all()
+    _send_match_snapshot()
     if advanced:
-        _send_self_snapshot()
+        _send_match_snapshot()
 
 
 func _play_singleplayer_opponent() -> void:
-    if _remote_state.game_over or _remote_state.hand.is_empty():
+    if _remote_state.game_over:
         return
-
-    var moves_to_play := 1
-    if _self_state.hand.is_empty():
-        moves_to_play = _remote_state.hand.size()
-
-    for _i in range(moves_to_play):
-        if not _play_one_ai_card():
-            break
+    if _remote_claimed_count < GameState.HAND_SIZE:
+        _ai_claim_cards(GameState.HAND_SIZE - _remote_claimed_count)
+    if _remote_state.hand.is_empty():
+        return
+    _play_one_ai_card()
+    if _self_round_done():
+        while not _remote_state.hand.is_empty():
+            if not _play_one_ai_card():
+                break
 
 
 func _play_one_ai_card() -> bool:
@@ -499,13 +787,25 @@ func _play_one_ai_card() -> bool:
 
 
 func _try_start_next_round() -> bool:
-    if not _self_state.is_round_done() or not _remote_state.is_round_done():
+    if not _self_round_done() or not _remote_round_done():
+        return false
+    if _game_mode == MODE_ONLINE and _network.is_client():
         return false
 
     var advanced := _self_state.start_next_round()
-    if _game_mode == MODE_SINGLE:
-        advanced = _remote_state.start_next_round() or advanced
+    _remote_state.start_next_round()
+    _self_claimed_count = 0
+    _remote_claimed_count = 0
+    _refresh_draft_pool()
     return advanced
+
+
+func _self_round_done() -> bool:
+    return _self_state.game_over or (_self_claimed_count >= GameState.HAND_SIZE and _self_state.hand.is_empty())
+
+
+func _remote_round_done() -> bool:
+    return _remote_state.game_over or (_remote_claimed_count >= GameState.HAND_SIZE and _remote_state.hand.is_empty())
 
 
 func _restore_manual_drag_card() -> void:
@@ -577,22 +877,54 @@ func _on_restart_pressed() -> void:
         _drag_card.queue_free()
         _clear_manual_drag()
     _animating = false
-    _self_state.restart()
-    if _game_mode == MODE_SINGLE:
-        _remote_state.restart()
-        _remote_state.last_message = "单机对手已准备，会随机放牌。"
-    _refresh_all()
-    _send_self_snapshot()
+    _start_new_match()
+    _send_match_snapshot()
 
 
-func _send_self_snapshot() -> void:
-    _network.send_player_snapshot(_self_state.to_snapshot())
+func _send_match_snapshot() -> void:
+    if _game_mode == MODE_ONLINE and _network.is_client():
+        _network.send_player_snapshot({
+            "type": "player_state",
+            "player": _self_state.to_snapshot(),
+            "claimed_count": _self_claimed_count,
+            "selected_index": _self_selected_draft_index
+        })
+        return
+
+    _network.send_player_snapshot({
+        "type": "state",
+        "player": _self_state.to_snapshot(),
+        "claimed_count": _self_claimed_count,
+        "self_claimed_count": _remote_claimed_count,
+        "self_selected_index": _remote_selected_draft_index,
+        "remote_selected_index": _self_selected_draft_index,
+        "draft_pool": _cards_to_snapshot(_draft_pool),
+        "round_time_left": _round_time_left
+    })
+
+
+func _cards_to_snapshot(cards: Array) -> Array:
+    var result := []
+    for card in cards:
+        result.append(null if card == null else card.to_snapshot())
+    return result
+
+
+func _cards_from_snapshot(cards: Variant) -> Array:
+    var result := []
+    if typeof(cards) != TYPE_ARRAY:
+        return result
+    for card_data in cards:
+        result.append(null if typeof(card_data) != TYPE_DICTIONARY else CardData.from_snapshot(card_data))
+    return result
 
 
 func _refresh_all() -> void:
     _refresh_player(PLAYER_SELF)
     _refresh_player(PLAYER_REMOTE)
+    _refresh_draft_view()
     _refresh_header()
+    _refresh_timer()
 
 
 func _refresh_player(player: int) -> void:
@@ -603,17 +935,35 @@ func _refresh_player(player: int) -> void:
     board_view.refresh_board(state.board, is_self and not state.game_over and not state.hand.is_empty())
     hand_view.refresh(state.hand, state.game_over, is_self)
     if is_self:
-        _self_restart_button.text = "再开一局" if state.game_over else "重新开播"
+        _self_restart_button.text = "重开"
     else:
-        _remote_restart_button.text = "电脑对手" if _game_mode == MODE_SINGLE else "只读同步"
+        _remote_restart_button.text = "电脑" if _game_mode == MODE_SINGLE else "只读"
+
+
+func _refresh_draft_view() -> void:
+    if _draft_pool_view == null:
+        return
+    _sanitize_draft_selections()
+    _draft_pool_view.refresh(_draft_pool, _game_mode == MODE_SINGLE or _network.has_remote_peer(), _self_selected_draft_index, _remote_selected_draft_index)
 
 
 func _refresh_header() -> void:
     _score_label.text = "我 %04d    对方 %04d" % [_self_state.score, _remote_state.score]
-    _message_label.text = "第 %d 轮 | 我剩 %d 张，对方剩 %d 张\n我：%s\n对方：%s" % [
+    _message_label.text = "第 %d 轮 | 我抢 %d/%d，手牌 %d | 对方抢 %d/%d，手牌 %d\n我：%s\n对方：%s" % [
         _self_state.round_index,
+        _self_claimed_count,
+        GameState.HAND_SIZE,
         _self_state.hand.size(),
+        _remote_claimed_count,
+        GameState.HAND_SIZE,
         _remote_state.hand.size(),
         _self_state.last_message,
         _remote_state.last_message
     ]
+
+
+func _refresh_timer() -> void:
+    if _timer_label == null:
+        return
+    var seconds := int(ceil(_round_time_left))
+    _timer_label.text = "%02d:%02d" % [seconds / 60, seconds % 60]
