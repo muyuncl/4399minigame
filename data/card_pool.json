@@ -13,14 +13,14 @@
       "color": "#42a5f5"
     },
     {
-      "type": "chat",
-      "label": "聊天",
-      "short": "聊",
+      "type": "rap",
+      "label": "Rap",
+      "short": "R",
       "color": "#f4b84a"
     }
   ],
   "value_min": 1,
-  "value_max": 5,
+  "value_max": 4,
   "warehouse_weight": 0.14,
   "warehouse": {
     "label": "收纳",

@@ -19,7 +19,7 @@ var _warehouse_data: Dictionary = {
 	"color": "#76c26a"
 }
 var _value_min: int = 1
-var _value_max: int = 5
+var _value_max: int = 4
 var _warehouse_weight: float = 0.14
 
 
@@ -121,7 +121,7 @@ func _load_config(config_path: String) -> void:
 
 	_normal_cards = data.get("normal_cards", [])
 	_value_min = int(data.get("value_min", 1))
-	_value_max = int(data.get("value_max", 5))
+	_value_max = int(data.get("value_max", 4))
 	_warehouse_weight = float(data.get("warehouse_weight", 0.14))
 	_warehouse_data = data.get("warehouse", _warehouse_data)
 
@@ -133,10 +133,10 @@ func _use_default_config() -> void:
 	_normal_cards = [
 		{"type": "sing", "label": "唱歌", "short": "唱", "color": "#e65f73"},
 		{"type": "dance", "label": "跳舞", "short": "舞", "color": "#42a5f5"},
-		{"type": "chat", "label": "聊天", "short": "聊", "color": "#f4b84a"}
+		{"type": "rap", "label": "Rap", "short": "R", "color": "#f4b84a"}
 	]
 	_value_min = 1
-	_value_max = 5
+	_value_max = 4
 	_warehouse_weight = 0.14
 	_warehouse_data = {"label": "收纳", "short": "收", "color": "#76c26a"}
 
