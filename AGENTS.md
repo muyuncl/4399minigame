@@ -39,7 +39,16 @@ Use the project helper:
 .\tools\dev.ps1 editor
 ```
 
-The helper downloads Godot 4.6 stable to a local temp tools directory when needed.
+On macOS/Linux use:
+
+```bash
+./tools/dev.sh doctor
+./tools/dev.sh verify
+./tools/dev.sh run
+./tools/dev.sh editor
+```
+
+The helpers download Godot 4.6 stable to a local temp tools directory when needed.
 
 ## Engineering Rules
 
@@ -51,6 +60,12 @@ The helper downloads Godot 4.6 stable to a local temp tools directory when neede
 
 ```powershell
 .\tools\dev.ps1 verify
+```
+
+On macOS/Linux:
+
+```bash
+./tools/dev.sh verify
 ```
 
 ## Current Near-Term Roadmap
