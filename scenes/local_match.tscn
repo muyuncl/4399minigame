@@ -1,0 +1,457 @@
+[gd_scene format=3 uid="uid://dlmu7cwrn87i2"]
+
+[ext_resource type="Script" path="res://scripts/ui/local_match_ui.gd" id="1_local_match_ui"]
+[ext_resource type="Script" path="res://scripts/ui/local_board_view.gd" id="2_local_board_view"]
+[ext_resource type="Script" path="res://scripts/ui/local_card_view.gd" id="3_local_card_view"]
+
+[node name="LocalMatch" type="Control" unique_id=987693231]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_local_match_ui")
+
+[node name="Letterbox" type="ColorRect" parent="." unique_id=737768258]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="DesignRoot" type="Control" parent="." unique_id=47724861]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Background" type="ColorRect" parent="DesignRoot" unique_id=1831153200]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.86, 0.86, 0.86, 1)
+
+[node name="TopBar" type="PanelContainer" parent="DesignRoot" unique_id=1833787338]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 28.0
+offset_right = 1884.0
+offset_bottom = 100.0
+
+[node name="P1Score" type="Label" parent="DesignRoot/TopBar" unique_id=1463713917]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "2"
+vertical_alignment = 1
+
+[node name="P2Score" type="Label" parent="DesignRoot/TopBar" unique_id=108525668]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "2"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RoundBadge" type="PanelContainer" parent="DesignRoot/TopBar" unique_id=1238359474]
+layout_mode = 2
+
+[node name="RoundLabel" type="Label" parent="DesignRoot/TopBar/RoundBadge" unique_id=1487639226]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "PK 00回合"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterDivider" type="ColorRect" parent="DesignRoot" unique_id=961789591]
+layout_mode = 0
+offset_left = 959.0
+offset_top = 100.0
+offset_right = 961.0
+offset_bottom = 476.0
+color = Color(0.08, 0.08, 0.08, 1)
+
+[node name="PlayerInfo" type="Control" parent="DesignRoot" unique_id=130205738]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 350.0
+
+[node name="P1Name" type="Label" parent="DesignRoot/PlayerInfo" unique_id=886073302]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 116.0
+offset_right = 320.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 26
+text = "P1 昵称"
+vertical_alignment = 1
+
+[node name="P1NameLine" type="ColorRect" parent="DesignRoot/PlayerInfo" unique_id=1915179569]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 156.0
+offset_right = 200.0
+offset_bottom = 159.0
+color = Color(0.08, 0.08, 0.08, 1)
+
+[node name="P2Name" type="Label" parent="DesignRoot/PlayerInfo" unique_id=573282295]
+layout_mode = 0
+offset_left = 1640.0
+offset_top = 116.0
+offset_right = 1900.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 26
+text = "P2 昵称"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="P2NameLine" type="ColorRect" parent="DesignRoot/PlayerInfo" unique_id=1571266558]
+layout_mode = 0
+offset_left = 1720.0
+offset_top = 156.0
+offset_right = 1860.0
+offset_bottom = 159.0
+color = Color(0.08, 0.08, 0.08, 1)
+
+[node name="P1AvatarHead" type="PanelContainer" parent="DesignRoot/PlayerInfo" unique_id=966514247]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 166.0
+offset_right = 524.0
+offset_bottom = 274.0
+
+[node name="P1AvatarBody" type="Polygon2D" parent="DesignRoot/PlayerInfo" unique_id=1641617571]
+position = Vector2(-36, 77)
+polygon = PackedVector2Array(470, 300, 540, 300, 528.5439, 268.90482, 505, 205)
+
+[node name="P2AvatarHead" type="PanelContainer" parent="DesignRoot/PlayerInfo" unique_id=1515852224]
+layout_mode = 0
+offset_left = 1414.0
+offset_top = 166.0
+offset_right = 1522.0
+offset_bottom = 274.0
+
+[node name="P2AvatarBody" type="Polygon2D" parent="DesignRoot/PlayerInfo" unique_id=609018055]
+position = Vector2(-4, 77)
+polygon = PackedVector2Array(1434, 300, 1504, 300, 1469, 205)
+
+[node name="TimerLabel" type="Label" parent="DesignRoot/PlayerInfo" unique_id=1912321280]
+layout_mode = 0
+offset_left = 770.0
+offset_top = 162.0
+offset_right = 1150.0
+offset_bottom = 258.0
+theme_override_font_sizes/font_size = 72
+text = "00:30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterBarrageLabel" type="Label" parent="DesignRoot/PlayerInfo" unique_id=1188271380]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 264.0
+offset_right = 1080.0
+offset_bottom = 292.0
+theme_override_font_sizes/font_size = 20
+text = "高能弹幕"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P1BarrageLabel" type="Label" parent="DesignRoot/PlayerInfo" unique_id=1770554651]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 246.0
+offset_right = 450.0
+offset_bottom = 274.0
+theme_override_font_sizes/font_size = 20
+text = "高能弹幕"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2BarrageLabel" type="Label" parent="DesignRoot/PlayerInfo" unique_id=500694507]
+layout_mode = 0
+offset_left = 1470.0
+offset_top = 246.0
+offset_right = 1650.0
+offset_bottom = 274.0
+theme_override_font_sizes/font_size = 20
+text = "高能弹幕"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P1GiftLabel" type="Label" parent="DesignRoot/PlayerInfo" unique_id=199331953]
+layout_mode = 0
+offset_left = 108.0
+offset_top = 186.0
+offset_right = 268.0
+offset_bottom = 244.0
+theme_override_font_sizes/font_size = 16
+text = "xxx
+送xxx x个"
+vertical_alignment = 1
+
+[node name="P2GiftLabel" type="Label" parent="DesignRoot/PlayerInfo" unique_id=15608095]
+layout_mode = 0
+offset_left = 1652.0
+offset_top = 186.0
+offset_right = 1812.0
+offset_bottom = 244.0
+theme_override_font_sizes/font_size = 16
+text = "xxx
+送xxx x个"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="P1PropSlots" type="Control" parent="DesignRoot/PlayerInfo" unique_id=1755269185]
+anchors_preset = 0
+offset_left = 48.0
+offset_top = 304.0
+offset_right = 228.0
+offset_bottom = 356.0
+
+[node name="Slot1" type="PanelContainer" parent="DesignRoot/PlayerInfo/P1PropSlots" unique_id=55147483]
+layout_mode = 0
+offset_right = 52.0
+offset_bottom = 52.0
+
+[node name="Slot2" type="PanelContainer" parent="DesignRoot/PlayerInfo/P1PropSlots" unique_id=1440358513]
+layout_mode = 0
+offset_left = 64.0
+offset_right = 116.0
+offset_bottom = 52.0
+
+[node name="Slot3" type="PanelContainer" parent="DesignRoot/PlayerInfo/P1PropSlots" unique_id=2052206012]
+layout_mode = 0
+offset_left = 128.0
+offset_right = 180.0
+offset_bottom = 52.0
+
+[node name="P2PropSlots" type="Control" parent="DesignRoot/PlayerInfo" unique_id=1578731565]
+anchors_preset = 0
+offset_left = 1692.0
+offset_top = 304.0
+offset_right = 1872.0
+offset_bottom = 356.0
+
+[node name="Slot1" type="PanelContainer" parent="DesignRoot/PlayerInfo/P2PropSlots" unique_id=350045635]
+layout_mode = 0
+offset_right = 52.0
+offset_bottom = 52.0
+
+[node name="Slot2" type="PanelContainer" parent="DesignRoot/PlayerInfo/P2PropSlots" unique_id=1902834131]
+layout_mode = 0
+offset_left = 64.0
+offset_right = 116.0
+offset_bottom = 52.0
+
+[node name="Slot3" type="PanelContainer" parent="DesignRoot/PlayerInfo/P2PropSlots" unique_id=1217743708]
+layout_mode = 0
+offset_left = 128.0
+offset_right = 180.0
+offset_bottom = 52.0
+
+[node name="LowerArea" type="Control" parent="DesignRoot" unique_id=688678609]
+anchors_preset = 0
+offset_top = 430.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="P1Area" type="PanelContainer" parent="DesignRoot/LowerArea" unique_id=1289997801]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 28.0
+offset_right = 796.0
+offset_bottom = 640.0
+
+[node name="P2Area" type="PanelContainer" parent="DesignRoot/LowerArea" unique_id=111878551]
+layout_mode = 0
+offset_left = 1124.0
+offset_top = 28.0
+offset_right = 1884.0
+offset_bottom = 640.0
+
+[node name="P1Board" type="Control" parent="DesignRoot/LowerArea" unique_id=1557062386]
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 50.0
+offset_right = 592.0
+offset_bottom = 602.0
+script = ExtResource("2_local_board_view")
+
+[node name="P2Board" type="Control" parent="DesignRoot/LowerArea" unique_id=776076218]
+anchors_preset = 0
+offset_left = 1328.0
+offset_top = 50.0
+offset_right = 1856.0
+offset_bottom = 602.0
+script = ExtResource("2_local_board_view")
+
+[node name="P1Basket" type="Control" parent="DesignRoot/LowerArea" unique_id=407956293]
+anchors_preset = 0
+offset_left = 666.0
+offset_top = 134.0
+offset_right = 744.0
+offset_bottom = 598.0
+
+[node name="Card1" type="PanelContainer" parent="DesignRoot/LowerArea/P1Basket" unique_id=961884968]
+layout_mode = 0
+offset_right = 78.0
+offset_bottom = 104.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card2" type="PanelContainer" parent="DesignRoot/LowerArea/P1Basket" unique_id=1666594641]
+layout_mode = 0
+offset_top = 120.0
+offset_right = 78.0
+offset_bottom = 224.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card3" type="PanelContainer" parent="DesignRoot/LowerArea/P1Basket" unique_id=809879026]
+layout_mode = 0
+offset_top = 240.0
+offset_right = 78.0
+offset_bottom = 344.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card4" type="PanelContainer" parent="DesignRoot/LowerArea/P1Basket" unique_id=196480567]
+layout_mode = 0
+offset_top = 360.0
+offset_right = 78.0
+offset_bottom = 464.0
+script = ExtResource("3_local_card_view")
+
+[node name="P2Basket" type="Control" parent="DesignRoot/LowerArea" unique_id=1326156234]
+anchors_preset = 0
+offset_left = 1176.0
+offset_top = 134.0
+offset_right = 1254.0
+offset_bottom = 598.0
+
+[node name="Card1" type="PanelContainer" parent="DesignRoot/LowerArea/P2Basket" unique_id=1829866832]
+layout_mode = 0
+offset_right = 78.0
+offset_bottom = 104.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card2" type="PanelContainer" parent="DesignRoot/LowerArea/P2Basket" unique_id=1812105353]
+layout_mode = 0
+offset_top = 120.0
+offset_right = 78.0
+offset_bottom = 224.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card3" type="PanelContainer" parent="DesignRoot/LowerArea/P2Basket" unique_id=1360228103]
+layout_mode = 0
+offset_top = 240.0
+offset_right = 78.0
+offset_bottom = 344.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card4" type="PanelContainer" parent="DesignRoot/LowerArea/P2Basket" unique_id=1933722604]
+layout_mode = 0
+offset_top = 360.0
+offset_right = 78.0
+offset_bottom = 464.0
+script = ExtResource("3_local_card_view")
+
+[node name="PublicPoolLabel" type="Label" parent="DesignRoot/LowerArea" unique_id=1122952001]
+layout_mode = 0
+offset_left = 855.0
+offset_top = -8.0
+offset_right = 1069.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 20
+text = "公共牌池 10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PublicPool" type="PanelContainer" parent="DesignRoot/LowerArea" unique_id=690847565]
+layout_mode = 0
+offset_left = 806.0
+offset_top = 32.0
+offset_right = 1114.0
+offset_bottom = 640.0
+
+[node name="Cards" type="Control" parent="DesignRoot/LowerArea/PublicPool" unique_id=1045347824]
+layout_mode = 2
+
+[node name="Card01" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=1255968244]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 20.0
+offset_right = 132.0
+offset_bottom = 118.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card02" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=306480671]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 20.0
+offset_right = 252.0
+offset_bottom = 118.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card03" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=1932660692]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 138.0
+offset_right = 132.0
+offset_bottom = 236.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card04" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=425620090]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 138.0
+offset_right = 252.0
+offset_bottom = 236.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card05" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=829061299]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 256.0
+offset_right = 132.0
+offset_bottom = 354.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card06" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=1723461574]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 256.0
+offset_right = 252.0
+offset_bottom = 354.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card07" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=839168922]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 374.0
+offset_right = 132.0
+offset_bottom = 472.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card08" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=854176215]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 374.0
+offset_right = 252.0
+offset_bottom = 472.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card09" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=1990044701]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 492.0
+offset_right = 132.0
+offset_bottom = 590.0
+script = ExtResource("3_local_card_view")
+
+[node name="Card10" type="PanelContainer" parent="DesignRoot/LowerArea/PublicPool/Cards" unique_id=1375832958]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 492.0
+offset_right = 252.0
+offset_bottom = 590.0
+script = ExtResource("3_local_card_view")

@@ -2,20 +2,24 @@
 
 ## Project Direction
 
-This project is a Godot 4 mini game prototype for a same-screen local PVP live-stream PK card puzzle.
+This project is a Godot 4 mini game prototype for a live-stream themed PVP card puzzle.
 
-Core direction:
+Current direction after syncing from `jch`:
 
-- Keep the main mode as local same-screen PVP.
-- Do not prioritize online multiplayer, mobile adaptation, or AI opponent work unless the user explicitly changes direction.
-- The fantasy is a live platform PK room: heat score, streamer personas, bullet comments, recap, and leaderboard.
-- The mechanical base is inspired by King of Veggies: place cards, adjacent same type + same number groups drop by one layer, score heat, and remove at 0.
-- Current MVP values: Singing, Dancing, Rap; value range 1-4; each player has a 6-column x 5-row board; each player gets 10 actions.
+- Main branch for personal development: `chutianyi`.
+- Latest gameplay baseline: `origin/jch`, merged into `chutianyi`.
+- Project entry scene: `scenes/start_screen.tscn`.
+- The start screen provides local UI/demo entries and PVP LAN test entries.
+- The playable loop now centers on a public pool, player baskets, player boards, timed claim/place phases, heat bar, props, wildcard cards, and LAN PVP test flow.
+- Preserve the live platform PK fantasy: heat score, streamer personas, bullet comments/feedback, recap, and leaderboard direction.
 
-Primary product spec:
+Primary current docs:
 
-- `docs/product_direction_pvp.md`
+- `docs/local_pvp_ui_notes.md`
+- `docs/android_pc_lan_testing.md`
 - `docs/rules_and_collaboration.md`
+- `docs/product_direction_pvp.md`
+- `docs/dev_tooling.md`
 
 ## Local Private Context
 
@@ -30,7 +34,7 @@ Treat WeChat content as local sensitive context. Summarize design-relevant concl
 
 ## Development Commands
 
-Use the project helper:
+Use the project helper on Windows:
 
 ```powershell
 .\tools\dev.ps1 doctor
@@ -52,9 +56,11 @@ The helpers download Godot 4.6 stable to a local temp tools directory when neede
 
 ## Engineering Rules
 
-- Keep game rules in `scripts/puzzle/game_state.gd`.
-- Keep card data in `scripts/puzzle/card_data.gd` and `data/card_pool.json`.
-- UI should display, animate, and route player actions; avoid hiding gameplay rules in UI nodes.
+- Current gameplay rules live mainly in `scripts/core/player_board_state.gd`.
+- Balance and card generation live in `scripts/config/game_balance_config.gd`.
+- Shared layout constants live in `scripts/config/ui_layout_config.gd`.
+- PVP card data lives in `scripts/core/pvp_card_data.gd`.
+- Local/test UI flows live under `scripts/ui/`, especially `card_flow_test_ui.gd`, `pvp_match_test_ui.gd`, and `local_match_ui.gd`.
 - Prefer small, playable increments over broad rewrites.
 - Verify with Godot headless after script changes:
 
@@ -70,8 +76,8 @@ On macOS/Linux:
 
 ## Current Near-Term Roadmap
 
-1. Polish local PVP flow: active player clarity, turn count, final recap.
-2. Add a proper result screen matching Tang Zoutao's prototype.
-3. Add 3-5 special cards only after the base loop feels good.
-4. Add streamer portraits, card icons, and bullet-comment feedback.
-5. Playtest for RNG frustration and adjust deck weights/value ranges.
+1. Keep `chutianyi` synced to the latest playable gameplay branch before starting new work.
+2. Stabilize the PVP match test flow and LAN authority model.
+3. Connect props cleanly into the network match.
+4. Improve result/recap UI and streamer PK feedback.
+5. Tune `GameBalanceConfig` probabilities, prop pacing, and comeback compensation.

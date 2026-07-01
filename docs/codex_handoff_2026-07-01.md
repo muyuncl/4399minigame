@@ -1,6 +1,6 @@
 # Codex Handoff - 2026-07-01
 
-This file is a compact handoff package for continuing the project from another machine, especially a MacBook.
+This is a compact handoff package for continuing the project from another machine, especially a MacBook.
 
 It is not a literal full transcript of hidden tool calls or system instructions. It preserves the project decisions, user preferences, repo state, commands, and continuation prompts that matter for development.
 
@@ -18,64 +18,67 @@ It is not a literal full transcript of hidden tool calls or system instructions.
 - GitHub: `https://github.com/muyuncl/4399minigame`
 - Local Windows repo path: `G:\MiniGame\4399minigame`
 - Active personal branch: `chutianyi`
+- Latest gameplay baseline synced from: `origin/jch`
 - Main branch should stay stable. Personal work should happen on `chutianyi`, then PR to `main`.
-- Latest known checkpoint commit after setup: `5289ea5 Build local PVP demo foundation`.
+- A safety branch was created before syncing: `backup/chutianyi-before-jch-sync`.
 
-## Project Direction
+## Current Project State
 
-The game is a Godot 4 mini game prototype:
+The project has been synced with the `jch` branch, which currently contains the latest playable battle logic and PVP experience.
 
-- Same-screen local PVP.
-- Live-stream PK wrapper.
-- Card placement + adjacent same type/same number elimination.
-- Heat score, streamer personas, bullet comments, battle recap, leaderboard.
-- Inspired by King of Veggies, but optimized toward local PVP drama and lower random frustration.
+The old early prototype files are no longer the main path:
 
-Current MVP:
+- `scripts/puzzle/game_state.gd` was removed.
+- `scripts/ui/main.gd` was removed.
+- `data/card_pool.json` was removed.
 
-- Board: each player has one 6-column x 5-row stage board.
-- Card types: Singing, Dancing, Rap.
-- Values: 1-4.
-- Each player takes up to 10 actions.
-- Place one hand card into an empty cell.
-- Top row or left column adds +1 to a normal card.
-- Orthogonally adjacent same type + same number groups drop by 1 layer and score heat.
-- Cards reaching 0 disappear.
-- Basket/cleanup card remains the first special card.
-- If a player's board fills and they cannot place, they lose early.
-- After 10 actions each, higher heat wins.
+Current entry point:
 
-Important docs:
+- `project.godot`
+- `scenes/start_screen.tscn`
+- `scripts/ui/start_screen.gd`
+
+Current main test scenes:
+
+- `scenes/local_match.tscn`
+- `scenes/card_flow_test.tscn`
+- `scenes/pvp_network_test.tscn`
+- `scenes/pvp_match_test.tscn`
+- `scenes/pvp_lan_network.tscn`
+
+Current core code:
+
+- `scripts/core/player_board_state.gd`
+- `scripts/core/pvp_card_data.gd`
+- `scripts/config/game_balance_config.gd`
+- `scripts/config/ui_layout_config.gd`
+- `scripts/ui/card_flow_test_ui.gd`
+- `scripts/ui/pvp_match_test_ui.gd`
+- `scripts/ui/pvp_network_test_ui.gd`
+
+## Current Gameplay Summary
+
+- Public pool has 10 cards.
+- Players claim cards into baskets.
+- Basket size is 4.
+- Players place basket cards onto their board.
+- Same type + same value orthogonal groups resolve.
+- Wildcards match any type with same value and disappear after resolving.
+- Border placement bonus: top row or left column increases value by 1.
+- Resolves score heat and removed-card bonuses.
+- Heat bar represents score pressure.
+- Comeback compensation can grant props.
+- Props currently include remove, +1, and -1.
+- LAN PVP uses Host authority: Host validates operations, resolves rules, and broadcasts snapshots.
+
+## Important Docs
 
 - `AGENTS.md`
 - `docs/product_direction_pvp.md`
 - `docs/rules_and_collaboration.md`
+- `docs/local_pvp_ui_notes.md`
+- `docs/android_pc_lan_testing.md`
 - `docs/dev_tooling.md`
-
-## Evidence And Design Inputs Used
-
-- GitHub repo: `muyuncl/4399minigame`.
-- Reference video: Bilibili `BV13P4y1y7rW`, King of Veggies gameplay explanation.
-- Reference game page: `https://pinchazumos.itch.io/king-of-veggies`.
-- Tang Zoutao prototype PDF: live platform lobby, streamer identity, VS intro, dual PK board, action/effect selection, recap, heat leaderboard.
-- Meeting note image from 2026-06-29: final direction is same-screen local PVP; no online/mobile/AI opponent priority; values should be reduced to 1-4; keep same type + same number elimination; add live-room UI elements.
-- WeChat backup path on Windows was configured as a local environment variable, but raw chat packages looked encrypted/binary during first pass.
-
-## Current Implementation State
-
-Implemented on `chutianyi`:
-
-- `scripts/ui/main.gd` is a same-screen local PVP controller.
-- Two `GameState` instances are used, one per player.
-- Active player alternates.
-- Each player has 10 actions.
-- Early full-board loss and final heat comparison exist.
-- Header shows score/round/active player/comment feedback.
-- Existing drag/drop and chain animation are preserved.
-- `data/card_pool.json` uses Singing/Dancing/Rap and values 1-4.
-- `scripts/puzzle/game_state.gd` default fallback also uses Rap and max value 4.
-- `tools/dev.ps1` exists for Windows Godot setup/verify/run/editor.
-- `tools/dev.sh` exists for macOS/Linux Godot setup/verify/run/editor.
 
 ## Windows Tooling
 
@@ -88,16 +91,10 @@ From repo root:
 .\tools\dev.ps1 editor
 ```
 
-Windows currently uses Godot 4.6 stable portable under the repo-adjacent temp tools directory:
+Windows helper uses Godot 4.6 stable portable under the repo-adjacent temp tools directory:
 
 ```text
 ..\tmp\godot
-```
-
-On the original Windows desktop, a convenience shortcut was also created for opening this project in the editor:
-
-```text
-Godot 4.6 - 4399minigame Editor.lnk
 ```
 
 ## Mac Setup
@@ -138,74 +135,30 @@ Do not commit private local paths.
 
 ## Cross-Platform Safety Notes
 
-Mac development should not break Windows by itself.
-
-Safe:
-
-- Editing `.gd`, `.tscn`, `.tres`, `.json`, `.md`.
-- Committing Godot scene/script changes.
-- Using the same Godot version: 4.6 stable.
-- Final Windows build/exporting to `.exe` from Windows.
+Mac and Windows development are compatible for this Godot project as long as both use Godot 4.6 stable and all changes go through Git. The final `.exe` can be exported on Windows even if some gameplay code was written on Mac.
 
 Watch out:
 
 - Do not commit `.godot/`; it is ignored and machine-local.
-- Do not commit OS junk like `.DS_Store`.
-- Avoid case-only filename changes, because Windows file systems are usually case-insensitive.
+- Do not commit `.DS_Store`.
+- Avoid case-only filename changes because Windows is usually case-insensitive.
 - Avoid hard-coded absolute paths like `/Users/...` or `G:\...` inside committed resources.
-- Keep asset filenames stable and ASCII/simple when possible.
-- If Mac Godot rewrites scene metadata, inspect `git diff` before committing.
+- If Godot rewrites scenes on either OS, inspect `git diff` before committing.
 
-Recommended sync habit:
+## Suggested New Codex Prompt
 
-```bash
-git status
-git pull --rebase
-git add .
-git commit -m "Describe current progress"
-git push
-```
-
-On Windows, pull before continuing:
-
-```powershell
-git switch chutianyi
-git pull --rebase
-.\tools\dev.ps1 verify
-```
-
-## Suggested New Mac Codex Prompt
-
-Paste this when starting a new Mac Codex thread:
+Paste this when starting a new Codex thread:
 
 ```text
-继续 4399minigame 项目。仓库是 https://github.com/muyuncl/4399minigame，当前分支 chutianyi。
-请先阅读 AGENTS.md、docs/codex_handoff_2026-07-01.md、docs/product_direction_pvp.md、docs/rules_and_collaboration.md、docs/dev_tooling.md。
-我的目标是继续实现战斗逻辑。请从 scripts/puzzle/game_state.gd 和 scripts/ui/main.gd 入手，先确认当前状态，再给出最小可玩增量并实现。提交前运行 ./tools/dev.sh verify。
+继续 4399minigame 项目。仓库是 https://github.com/muyuncl/4399minigame，当前分支 chutianyi，最新玩法已从 jch 同步。
+请先阅读 AGENTS.md、docs/codex_handoff_2026-07-01.md、docs/local_pvp_ui_notes.md、docs/rules_and_collaboration.md、docs/product_direction_pvp.md、docs/dev_tooling.md。
+我的目标是继续完善战斗逻辑/PVP体验。请从 scripts/core/player_board_state.gd、scripts/config/game_balance_config.gd、scripts/ui/card_flow_test_ui.gd、scripts/ui/pvp_match_test_ui.gd 入手，先确认当前状态，再给出最小可玩增量并实现。提交前运行对应平台的 verify 脚本。
 ```
 
 ## Next Development Targets
 
-1. Battle logic pass:
-   - Define whether "turn" means one card placement or a 10-card draft/action bundle.
-   - Add per-turn action state cleanly.
-   - Track max chain, last played card, early loss reason, and recap stats.
-
-2. Result screen:
-   - Match Tang Zoutao prototype: winner, final heat, heat gap, max chain, rounds, full-board status, rematch.
-
-3. Special cards:
-   - Keep to 3-5 total.
-   - Start with controlled cleanup/interference, not a text-heavy card battler.
-
-4. Feedback:
-   - Heat bar and bullet-comment reactions.
-   - Active player clarity.
-   - Better invalid-placement messages.
-
-5. Playtest:
-   - Tune value range, hand size, refill timing, and special card probability.
-
-## Current Answer To Mac/Windows Concern
-
-Mac and Windows development are compatible for this Godot project as long as both use Godot 4.6 stable and all changes go through Git. The final `.exe` can be exported on Windows even if some gameplay code was written on Mac.
+1. Stabilize PVP match test authority and snapshot flow.
+2. Connect props into the network match.
+3. Improve result/recap UI.
+4. Tune heat bar, comeback thresholds, and card probability.
+5. Replace placeholder UI/card/avatar art.

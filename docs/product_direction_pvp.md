@@ -1,124 +1,139 @@
-# 4399 Minigame Product Direction - Local PK MVP
+# 4399 Minigame Product Direction - Current PVP Prototype
 
-## Evidence Used
+## Current Baseline
 
-- Current repository: Godot 4 project with a single-board card placement puzzle, 6x5 board, hand UI, chain scoring, and `data/card_pool.json`.
-- Prototype PDF from Tang Zoutao: live platform wrapper, lobby, streamer identity confirmation, VS intro, dual PK board, action/effect selection, battle recap, heat leaderboard.
-- 2026-06-29 meeting note: final core play must be aligned before 2026-07-05; direction is same-screen local PVP, not mobile networking or AI opponent; 10-round heat contest; values should move from 1-6 to 1-4; keep same type + same number adjacent elimination; add streamer-style progress, bullet comments, and compact action windows.
-- Bilibili reference video for King of Veggies: same number + same type adjacent cards drop by one layer and score; border placement increases value; basket card clears nearby same-number groups; late game pressure rises as random values increase.
-- Related early proposals: platform/content operation, user resonance, AI KPI, and narrative experiments. These should not become the final mechanics, but they can feed the live-broadcast world view and result-report language.
-- WeChat PC backup package: file structure was readable, but chat packages were encrypted/binary. No reliable plaintext discussion was extracted from the backup body.
+This branch has been synced with `origin/jch`, which currently contains the latest playable direction and the most complete foundation for battle logic and PVP experience.
+
+The project is no longer the early single-board hand-card prototype. The current architecture includes:
+
+- Start screen entry flow.
+- Local match layout prototype.
+- Card-flow gameplay test.
+- LAN connection test.
+- PVP match test.
+- Android/PC LAN export/test preparation.
+- Balance and layout config files.
+- Dedicated core board/card state classes.
 
 ## Final Positioning
 
-The game should be a same-screen streamer PK card puzzle:
+The game is a live-stream themed PVP card puzzle.
 
-Two streamers fight for heat in a short live broadcast. Each player has an independent stage board. Players place talent cards such as singing, dancing, and Rap. Adjacent same talent + same number cards trigger heat, drop numbers, and may chain. Special cards create small disruptions or cleanup moments. After 10 turns, the higher heat wins, unless a player fills their board and loses early.
+Two players compete for heat by drafting cards from a public pool, placing them onto their own boards, triggering same-value/same-type chains, using props, and trying to swing the PK heat bar. The fun should come from readable puzzle tactics plus the pressure of racing another player inside a live broadcast wrapper.
 
-The target feeling is not pure farming and not pure match-3. It should feel like:
+The target feeling:
 
-- "I can understand the rule in 20 seconds."
-- "Every placement is a small trap or setup."
-- "My opponent can see what I am building."
-- "The screen reacts like a live PK room, so scoring feels performative."
-- "One more round might let me reverse the heat bar."
+- Rules are understandable quickly.
+- The public pool creates shared pressure and small fights over resources.
+- Basket capacity forces short-term planning.
+- Board placement creates chain setup and cleanup decisions.
+- Heat bar and comeback compensation make the match feel alive.
+- Props give controlled reversal moments without turning the game into a heavy text-card battler.
 
-## What Makes It Fun
+## Current Gameplay Loop
 
-1. Simple rule, high readability
-   Same type + same number is the only core elimination rule. The player can instantly predict most outcomes.
+1. Round starts.
+2. Public pool refills to 10 cards.
+3. Pool is locked briefly with a visual cover/falling-card moment.
+4. Claim phase begins.
+5. Players claim cards from the public pool into baskets.
+6. Claim ends when baskets are full or time expires.
+7. Place phase begins.
+8. Players drag basket cards onto their own board.
+9. Placement triggers chain resolution and heat scoring.
+10. When baskets are empty, the next round starts.
 
-2. Local PVP creates pressure that the reference game does not have
-   King of Veggies is mostly about fighting the random deck and board space. Our version adds social pressure: both players see score, board danger, remaining turns, and possible setups.
+The single-player card-flow test scene currently exercises this loop most directly:
 
-3. Heat is a better score fantasy than vegetables
-   Heat, bullet comments, PK progress, and streamer personas make every chain feel like a public performance rather than abstract points.
+- `scenes/card_flow_test.tscn`
+- `scripts/ui/card_flow_test_ui.gd`
 
-4. Short 10-turn format gives a clear arc
-   The game should ramp from setup to comeback to final swing. A short match is easier to test, replay, and show in a booth or classroom.
+The network PVP test scene is the current LAN authority path:
 
-5. Special cards can become personality
-   A small set of disruption cards can create "audience interference" moments: boost opponent cells, lock a grid, force a discard, copy a card, or clean a number. These are more memorable than pure score modifiers.
+- `scenes/pvp_network_test.tscn`
+- `scenes/pvp_match_test.tscn`
+- `scripts/ui/pvp_network_test_ui.gd`
+- `scripts/ui/pvp_match_test_ui.gd`
+
+## Core Rules
+
+- Boards use `UiLayoutConfig.BOARD_COLUMNS` and `UiLayoutConfig.BOARD_ROWS`.
+- Public pool size is 10.
+- Basket size is 4.
+- Normal cards currently include:
+  - 游戏
+  - 聊天
+  - 才艺
+- Wildcard cards are supported.
+- Border placement bonus: top row or left column increases placed card value by 1.
+- Same type + same value orthogonal groups resolve together.
+- Wildcards match any type with the same value and disappear after resolving.
+- Cards drop one layer when resolved; cards at 0 are removed.
+- Heat score comes from affected cards, removed cards, and multi-step chains.
+
+## Balance Surface
+
+Primary file:
+
+- `scripts/config/game_balance_config.gd`
+
+Important parameters:
+
+- `WILD_CARD_WEIGHT`
+- `NORMAL_CARD_TYPES`
+- `WILD_CARD_DATA`
+- `VALUE_PROBABILITY_BY_ROUND`
+
+The current prototype uses round-based value probabilities, gradually increasing access to higher values.
+
+## Props
+
+Current prop candidates:
+
+- `消`: remove one target card.
+- `+1`: increase one target card's value by 1 and resolve if possible.
+- `-1`: decrease one target card's value by 1 and resolve if possible.
+
+Rules:
+
+- `scripts/core/player_board_state.gd`
+
+UI:
+
+- `scripts/ui/local_prop_view.gd`
 
 ## Optimization Over King Of Veggies
 
-Reference strengths to keep:
+Keep:
 
-- Drag cards from hand to board.
-- Same type + same number adjacency.
-- Values drop layer by layer instead of disappearing immediately.
-- Border placement changes value and creates spatial planning.
-- A basket-like special card gives board control.
+- Simple adjacency matching.
+- Layer-drop resolution.
+- Board pressure.
+- Special cleanup/reversal tools.
 
-Reference pain points to improve:
+Improve:
 
-- Randomness can feel unfair when the deck keeps giving unusable high values.
-- Single-player scoring lacks direct drama after the player understands the system.
-- Late game can become a slow death when board space is blocked.
-- There is little reason to care about "who" is playing.
-
-Our answers:
-
-- Lower value range to 1-4 for the MVP.
-- Use 10-turn PK instead of endless survival.
-- Use local PVP so pressure comes from the opponent, not only RNG.
-- Use limited special cards to create controlled reversals.
-- Use live-room UI to turn every score burst into visible heat, audience reaction, and recap stats.
-
-## MVP Rule Set
-
-- Board: each player has one 6-column x 5-row stage board.
-- Basic cards: Singing, Dancing, Rap.
-- Card values: 1-4.
-- Placement: place cards into empty cells only.
-- Border bonus: top row or left column adds +1 to a normal card once.
-- Elimination: adjacent orthogonal same type + same value cards form a group, drop by 1, and score heat per affected card.
-- Removal: cards reaching 0 leave the board.
-- Special card v1: keep the current basket/cleanup card as the first special.
-- Match length: 10 turns per player for the first playable PVP build.
-- Early loss: a player who cannot place because their board is full loses immediately.
-- Win condition: after both players finish 10 turns, higher heat wins. Tie can be "PK draw" in the MVP.
-
-## PVP Expansion Candidates
-
-Use only 3-5 special cards in the final demo. Avoid turning the game into a text-heavy card battler.
-
-- Raise Hype: choose one opponent cell, value +1. It can break their setup or push a card out of matching range.
-- Mic Drop: remove one value-1 card from your board.
-- Trend Copy: copy the type of the last card your opponent played, with a random value 1-4.
-- Lag Spike: opponent's next drawn card is hidden until their turn starts.
-- Fan Gift: score +2 if the played card triggers at least one chain this turn.
-
-## UI Direction
-
-- First screen should be the playable PK table, not a landing page.
-- Layout: P1 board left, P2 board right, shared PK header on top, active player's hand/actions near the bottom or side.
-- Top header: P1 heat, P2 heat, round count, active player, PK progress bar.
-- Add lightweight bullet comments as reactive feedback after scoring, not as a manual tutorial.
-- Result screen: winner, final heat, heat gap, max chain, full-board status, rematch button, leaderboard hook.
-- Avoid covering the board with large modals during core placement.
+- Reduce pure solitaire feeling through shared public pool and PVP.
+- Convert score into live-stream heat pressure.
+- Add comeback compensation and props to fight random dead states.
+- Use timed claim/place phases to create rhythm and urgency.
 
 ## Development Priorities
 
-1. Local PVP loop
-   Two player states, active player switching, 10 turns per player, early full-board loss, final heat comparison.
+1. Stabilize the `pvp_match_test` authority flow.
+2. Connect props into network PVP.
+3. Move card/art/balance data into editable config resources or data files where useful.
+4. Improve result/recap UI.
+5. Add final visual assets for cards, avatars, props, live-room UI, and backgrounds.
+6. Tune probability tables and comeback thresholds after playtesting.
 
-2. Rule clarity
-   Keep all scoring in `scripts/puzzle/game_state.gd`. UI should only display and animate results.
+## Files To Know
 
-3. Feedback pass
-   Heat bar, active player label, turn counter, chain messages, and recap stats.
-
-4. Special card pass
-   Add disruption cards only after the base loop feels good.
-
-5. Art pass
-   Replace placeholder cards with streamer talent icons and character portraits. Keep icon colors readable first.
-
-## Open Questions
-
-- Is a "turn" one card placement, or one draft/action bundle from 10 shared cards?
-- Should players draft from a shared 10-card row, or keep private hands?
-- Should special cards target the opponent board directly, or create global live-room events?
-- Should full board be an instant loss or a forced stop that compares current heat?
-- Do we want streamer names/avatars to be chosen in the prototype flow, or hard-code P1/P2 for the demo?
+- `project.godot`: starts at `scenes/start_screen.tscn`.
+- `docs/local_pvp_ui_notes.md`: current detailed design and implementation notes.
+- `docs/android_pc_lan_testing.md`: PC/Android LAN testing/export notes.
+- `scripts/core/player_board_state.gd`: board rules.
+- `scripts/config/game_balance_config.gd`: balance.
+- `scripts/config/ui_layout_config.gd`: layout constants.
+- `scripts/ui/card_flow_test_ui.gd`: local gameplay loop test.
+- `scripts/ui/pvp_match_test_ui.gd`: network PVP match test.

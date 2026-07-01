@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/pvp_network_test_ui.gd" id="1_pvp_lan_network"]
+
+[node name="PvpLanNetwork" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pvp_lan_network")
+page_title = "PVP双端联机"
+help_text = "双端联机：房主设备创建房间，另一台设备输入房主局域网 IP 和端口加入。两台设备需要在同一个 Wi-Fi 下；若连接失败，请检查防火墙是否允许 Godot。"
+default_join_address = ""
+enter_match_button_text = "进入PVP对战"
+show_lan_addresses = true

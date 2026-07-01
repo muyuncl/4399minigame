@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="4399minigame"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/start_screen.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -21,6 +21,14 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/window_width_override=1920
 window/size/window_height_override=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+window/handheld/orientation=1
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
+pointing/emulate_touch_from_mouse=true
 
 [physics]
 
